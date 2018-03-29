@@ -323,7 +323,7 @@ export default class Calendar extends Component {
 			isModalVisible,
 			selectionType
 		} = this.state
-		const { animationType } = this.props
+		const { animationType, dow } = this.props
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
@@ -335,6 +335,7 @@ export default class Calendar extends Component {
 		const subFontColor = { color: subColor }
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
+		const daysOfTheWeek = dow ? [1, 2, 3, 4, 5, 6, 7] : [7, 1, 2, 3, 4, 5, 6]
 
 		return (
 			<Modal
@@ -383,7 +384,7 @@ export default class Calendar extends Component {
 						</View>
 					</View>
 					<View style={styles.week}>
-						{[7, 1, 2, 3, 4, 5, 6].map(item => (
+						{daysOfTheWeek.map(item => (
 							<Text style={[styles.weekText, subFontColor]} key={item}>
 								{this._i18n(item, "w")}
 							</Text>
