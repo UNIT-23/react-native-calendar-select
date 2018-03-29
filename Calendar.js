@@ -31,6 +31,7 @@ export default class Calendar extends Component {
 	static defaultProps = {
 		format       : "YYYY-MM-DD",
 		i18n         : "en",
+		dow          : 1,
 		customI18n   : {},
 		color        : {},
 		selectionType: "manual",
@@ -93,8 +94,7 @@ export default class Calendar extends Component {
 			isModalVisible: false,
 			selectionType : "manual"
 		}
-		this._today = Moment()
-		this._year = this._today.year()
+
 		this._i18n = this._i18n.bind(this)
 		this._getDateRange = this._getDateRange.bind(this)
 		this._onChoose = this._onChoose.bind(this)
@@ -105,6 +105,20 @@ export default class Calendar extends Component {
 		this.open = this.open.bind(this)
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
+	}
+
+	componentWillMount () {
+		const { i18n, dow } = this.props
+
+		Moment.updateLocale(i18n, {
+			week: {
+				// Monday is the first day of the week
+				dow
+			}
+		})
+
+		this._today = Moment()
+		this._year = this._today.year()
 		this._getDateRange()
 	}
 
