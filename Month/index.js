@@ -77,7 +77,7 @@ export default class Month extends Component {
 	_getDayList (date) {
 		let dayList
 		const month = date.month()
-		let weekday = date.weekay()
+		let weekday = date.weekday()
 		if (weekday === 7) {
 			dayList = []
 		} else {
@@ -92,7 +92,7 @@ export default class Month extends Component {
 			date.add(1, "days")
 		}
 		date.subtract(1, "days")
-		weekday = date.weekay()
+		weekday = date.weekday()
 		if (weekday === 7) {
 			return dayList.concat(
 				new Array(6).fill({
