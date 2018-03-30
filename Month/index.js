@@ -3,15 +3,14 @@
  */
 
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native"
-import Moment from "moment"
+import { View, Text } from "react-native"
+
 import styles from "./style"
 import Day from "../Day"
 
 export default class Month extends Component {
-	constructor(props) {
+	constructor (props) {
 		super(props)
 		this._getDayList = this._getDayList.bind(this)
 		this._renderDayRow = this._renderDayRow.bind(this)
@@ -61,11 +60,11 @@ export default class Month extends Component {
 			"December"
 		]
 	}
-	_getMonthText() {
+	_getMonthText () {
 		const { month, today, i18n } = this.props
-		let y = month.year()
-		let m = month.month()
-		let year = today.year()
+		const y = month.year()
+		const m = month.month()
+		const year = today.year()
 		if (year === y) {
 			return Month.I18N_MAP[i18n][m]
 		} else {
@@ -75,10 +74,10 @@ export default class Month extends Component {
 			return month.format("YYYY年M月")
 		}
 	}
-	_getDayList(date) {
+	_getDayList (date) {
 		let dayList
-		let month = date.month()
-		let weekday = date.isoWeekday()
+		const month = date.month()
+		let weekday = date.weekay()
 		if (weekday === 7) {
 			dayList = []
 		} else {
@@ -93,7 +92,7 @@ export default class Month extends Component {
 			date.add(1, "days")
 		}
 		date.subtract(1, "days")
-		weekday = date.isoWeekday()
+		weekday = date.weekay()
 		if (weekday === 7) {
 			return dayList.concat(
 				new Array(6).fill({
@@ -107,8 +106,7 @@ export default class Month extends Component {
 			})
 		)
 	}
-	_renderDayRow(dayList, index) {
-		const { startDate, endDate, today } = this.props
+	_renderDayRow (dayList, index) {
 		return (
 			<View style={styles.dayRow} key={"row" + index}>
 				{dayList.map((item, i) => (
@@ -117,12 +115,12 @@ export default class Month extends Component {
 			</View>
 		)
 	}
-	render() {
-		const { month, today, color } = this.props
-		let subColor = { color: color.subColor }
-		let titleText = this._getMonthText()
-		let dayList = this._getDayList(month.clone())
-		let rowArray = new Array(dayList.length / 7).fill("")
+	render () {
+		const { month, color } = this.props
+		const subColor = { color: color.subColor }
+		const titleText = this._getMonthText()
+		const dayList = this._getDayList(month.clone())
+		const rowArray = new Array(dayList.length / 7).fill("")
 		return (
 			<View style={styles.month}>
 				<View style={styles.monthTitle}>

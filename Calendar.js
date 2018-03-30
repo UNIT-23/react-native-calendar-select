@@ -158,10 +158,10 @@ export default class Calendar extends Component {
 		this.setState({
 			startDate       : isStartValid ? start : null,
 			startDateText   : isStartValid ? this._i18n(start, "date") : "",
-			startWeekdayText: isStartValid ? this._i18n(start.isoWeekday(), "weekday") : "",
+			startWeekdayText: isStartValid ? this._i18n(start.weekday(), "weekday") : "",
 			endDate         : isEndValid ? end : null,
 			endDateText     : isEndValid ? this._i18n(end, "date") : "",
-			endWeekdayText  : isEndValid ? this._i18n(end.isoWeekday(), "weekday") : ""
+			endWeekdayText  : isEndValid ? this._i18n(end.weekday(), "weekday") : ""
 		})
 	}
 
@@ -197,9 +197,9 @@ export default class Calendar extends Component {
 					startDate       : day,
 					endDate         : day,
 					startDateText   : this._i18n(day, "date"),
-					startWeekdayText: this._i18n(day.isoWeekday(), "weekday"),
+					startWeekdayText: this._i18n(day.weekday(), "weekday"),
 					endDateText     : this._i18n(day, "date"),
-					endWeekdayText  : this._i18n(day.isoWeekday(), "weekday")
+					endWeekdayText  : this._i18n(day.weekday(), "weekday")
 				})
 
 				this.confirm({ startDate: day, endDate: day })
@@ -214,7 +214,7 @@ export default class Calendar extends Component {
 					startDate       : startDay,
 					endDate         : null,
 					startDateText   : this._i18n(startDay, "date"),
-					startWeekdayText: this._i18n(startDay.isoWeekday(), "weekday"),
+					startWeekdayText: this._i18n(startDay.weekday(), "weekday"),
 					endDateText     : "",
 					endWeekdayText  : ""
 				})
@@ -223,7 +223,7 @@ export default class Calendar extends Component {
 				this.setState({
 					endDate       : endDay,
 					endDateText   : this._i18n(endDay, "date"),
-					endWeekdayText: this._i18n(endDay.isoWeekday(), "weekday")
+					endWeekdayText: this._i18n(endDay.weekday(), "weekday")
 				})
 			}
 			return
@@ -234,7 +234,7 @@ export default class Calendar extends Component {
 				startDate       : day,
 				endDate         : null,
 				startDateText   : this._i18n(day, "date"),
-				startWeekdayText: this._i18n(day.isoWeekday(), "weekday"),
+				startWeekdayText: this._i18n(day.weekday(), "weekday"),
 				endDateText     : "",
 				endWeekdayText  : ""
 			})
@@ -242,7 +242,7 @@ export default class Calendar extends Component {
 			this.setState({
 				endDate       : day,
 				endDateText   : this._i18n(day, "date"),
-				endWeekdayText: this._i18n(day.isoWeekday(), "weekday")
+				endWeekdayText: this._i18n(day.weekday(), "weekday")
 			})
 		}
 	}
