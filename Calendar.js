@@ -95,6 +95,8 @@ export default class Calendar extends Component {
 			selectionType : "manual"
 		}
 
+		this.daysOfTheWeek = [7, 1, 2, 3, 4, 5, 6]
+
 		this._i18n = this._i18n.bind(this)
 		this._getDateRange = this._getDateRange.bind(this)
 		this._onChoose = this._onChoose.bind(this)
@@ -109,6 +111,11 @@ export default class Calendar extends Component {
 
 	componentWillMount () {
 		const { i18n, dow } = this.props
+
+		for (let i = 1; i < dow + 1; i++) {
+			const last = this.daysOfTheWeek.shift()
+			this.daysOfTheWeek = [...this.daysOfTheWeek, last]
+		}
 
 		Moment.updateLocale(i18n, {
 			week: {
@@ -323,7 +330,7 @@ export default class Calendar extends Component {
 			isModalVisible,
 			selectionType
 		} = this.state
-		const { animationType, dow } = this.props
+		const { animationType } = this.props
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
@@ -335,7 +342,6 @@ export default class Calendar extends Component {
 		const subFontColor = { color: subColor }
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
-		const daysOfTheWeek = dow ? [1, 2, 3, 4, 5, 6, 7] : [7, 1, 2, 3, 4, 5, 6]
 
 		return (
 			<Modal
@@ -384,7 +390,7 @@ export default class Calendar extends Component {
 						</View>
 					</View>
 					<View style={styles.week}>
-						{daysOfTheWeek.map(item => (
+						{this.daysOfTheWeek.map(item => (
 							<Text style={[styles.weekText, subFontColor]} key={item}>
 								{this._i18n(item, "w")}
 							</Text>
