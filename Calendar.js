@@ -129,8 +129,8 @@ export default class Calendar extends Component {
 		this._getDateRange()
 	}
 
-	componentDidMount () {
-		const { selectionType } = this.props
+	componentWillReceiveProps (nextProps) {
+		const { selectionType } = nextProps
 		this._resetCalendar()
 
 		this.setState({
