@@ -434,6 +434,7 @@ export default class Calendar extends Component {
 						</View>
 						{isValid ? (
 							<TouchableHighlight
+								testID="applyBtn"
 								underlayColor="rgba(255, 255, 255, 0.45)"
 								style={styles.confirmContainer}
 								onPress={this.confirm}
@@ -450,6 +451,7 @@ export default class Calendar extends Component {
 							</TouchableHighlight>
 						) : (
 							<View
+								testID="applyBtn"
 								style={[styles.confirmContainer, styles.confirmContainerDisabled]}
 							>
 								<View style={styles.confirmBtn}>
