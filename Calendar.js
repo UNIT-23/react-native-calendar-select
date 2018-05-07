@@ -3,16 +3,21 @@
  */
 
 import React, { Component } from "react"
+import { Animated, View, Text, Image, TouchableHighlight, Dimensions } from "react-native"
 import PropTypes from "prop-types"
 
-import { View, Text, Modal, Image, TouchableHighlight } from "react-native"
 import Moment from "moment"
 import styles from "./CalendarStyle"
 import MonthList from "./MonthList"
+
 const ICON = {
 	close:
 		"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADGklEQVR4Xu3b3XXTMBTAcV1Leu8I3YAyAWECygSlE9BOQJmAdAK6QWGCphNQNmAE+mzZl6Mc5xzXtiLJ1r0STfLqJM3/Z9muPwTiwF9w4P3iCHAcAQ4BRDxt2/aDEOKkqqqfAPD0P2EZYy6EEJ/sbwaATVVVtwDwd9gwuQkYY+wHv9n43QcQca21vi4dARFPmqa5F0Ks+r8VEZ+UUu+HCCMAu+abpvnVj+990Z1S6rJUBBtvjHkAgLOp34iIX7XWN/1lI4Cmaa4Q0a5916tIBF+8jUHER631i5ExAqjr+gYAvnjWclEIIfHBAIh41m0CvpFeBEJofBdzqZS627sJ2IV1Xa8B4LNPQAiRFSEmfmr4b48QrkhjjJWyhxLfKwtCZPxvpdQq+DC4Ky4VIVX83hFQKkLK+CAA+6ZSRkLq+GCAEhAo4qMAciJQxUcD5ECgjJ8FwIlAHT8bgAOBI34RACUCV/xiAAoEzvgkACkRuOOTAaRAyBGfFGAJQq745ABzEHLGkwDEItgLMK5reP3zcER0ntL6ztf3LSe7MRJxAuX9/VTxZCNgxqm0E4EynhwgcnMYIVDHswDMReCIZwOIReCKZwOIOdR12wHbhVayo8Bug54Rv/soCwIpwIJ4NgQygATxLAgkAAnjyRGSA8TE27199+BFtjtQSQFi43e3qyL+bU6+Y0wGMDd+xr/NSRGSACyNz4mwGCBVfC6ERQCp43MgzAagiudGmAVAHc+JEA3AFc+FEAXAHc+BEAyQK54aIQggdzwlgheglHgqhL0ApcVTIDgBSo1PjTAJUHp8SgTXfIGH4fP2U3cuOK/euu6chJ5KI+Kt1vpq+D0jgG6yxHfnrZpuQQnxsSNBSvl2OPNl6nH5DQC82wdQUnwMAgBcSynX/bZogBLjIxA+KqV++ACcEyZKjg9AeJZSnobMGbLzbuxm8KYvZZ+3V0qdTz1y7ttfcC+fmO/wjIjnWuuNdydo39AdBu0eczu/BgDsdbgXMy24o2L/nn3wom3bFSL+kVLaFTqaMrdti/3i1/b+I8BrW6OxPQc/Av4BDSZYbnPWwJkAAAAASUVORK5CYII="
 }
+
+let { height } = Dimensions.get("window")
+height = Number(height)
+
 export default class Calendar extends Component {
 	static propTypes = {
 		i18n      : PropTypes.string,
@@ -91,9 +96,10 @@ export default class Calendar extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			isModalVisible: false,
-			selectionType : "manual"
+			selectionType: "manual"
 		}
+
+		this.modalAnimation = new Animated.Value(-height)
 
 		this.daysOfTheWeek = [7, 1, 2, 3, 4, 5, 6]
 
@@ -255,7 +261,9 @@ export default class Calendar extends Component {
 	}
 
 	radioBtnsStyle (_selectionType) {
-		const { color: { borderColor } } = this.props
+		const {
+			color: { borderColor }
+		} = this.props
 		const { selectionType } = this.state
 
 		const selected = selectionType === _selectionType
@@ -272,9 +280,10 @@ export default class Calendar extends Component {
 	}
 
 	close () {
-		this.setState({
-			isModalVisible: false
-		})
+		Animated.timing(this.modalAnimation, {
+			toValue : -height,
+			duration: 350
+		}).start()
 	}
 
 	selection (selectionType) {
@@ -286,9 +295,10 @@ export default class Calendar extends Component {
 	}
 
 	open () {
-		this.setState({
-			isModalVisible: true
-		})
+		Animated.timing(this.modalAnimation, {
+			toValue : 0,
+			duration: 350
+		}).start()
 	}
 
 	clear () {
@@ -327,7 +337,6 @@ export default class Calendar extends Component {
 			startWeekdayText,
 			endDateText,
 			endWeekdayText,
-			isModalVisible,
 			selectionType
 		} = this.state
 		const { animationType } = this.props
@@ -344,12 +353,14 @@ export default class Calendar extends Component {
 		const isClearVisible = startDate || endDate
 
 		return (
-			<Modal
-				animationType={animationType}
-				visible={isModalVisible}
-				onRequestClose={this.close}
+			<Animated.View
+				style={[
+					styles.container,
+					mainBack,
+					{ transform: [{ translateY: this.modalAnimation }] }
+				]}
 			>
-				<View style={[styles.container, mainBack]}>
+				<View style={styles.subContainer}>
 					<View style={styles.ctrl}>
 						<TouchableHighlight underlayColor="transparent" onPress={this.cancel}>
 							<Image
@@ -358,7 +369,7 @@ export default class Calendar extends Component {
 								resizeMode="cover"
 							/>
 						</TouchableHighlight>
-						{isClearVisible && (
+						{/* {isClearVisible && (
 							<TouchableHighlight
 								underlayColor="transparent"
 								activeOpacity={0.8}
@@ -368,9 +379,9 @@ export default class Calendar extends Component {
 									{this._i18n("clear", "text")}
 								</Text>
 							</TouchableHighlight>
-						)}
+						)} */}
 					</View>
-					<View style={styles.result}>
+					{/* <View style={styles.result}>
 						<View style={styles.resultPart}>
 							<Text style={[styles.resultText, styles.startText, subFontColor]}>
 								{startDateText || this._i18n("start", "text")}
@@ -388,7 +399,7 @@ export default class Calendar extends Component {
 								{endWeekdayText || this._i18n("date", "text")}
 							</Text>
 						</View>
-					</View>
+					</View> */}
 					<View style={styles.week}>
 						{this.daysOfTheWeek.map(item => (
 							<Text style={[styles.weekText, subFontColor]} key={item}>
@@ -431,43 +442,44 @@ export default class Calendar extends Component {
 							>
 								<Text style={[styles.clearText, subFontColor]}>Manual</Text>
 							</TouchableHighlight>
+
+							{isValid ? (
+								<TouchableHighlight
+									testID="applyBtn"
+									underlayColor="rgba(255, 255, 255, 0.45)"
+									style={styles.selectionBtn}
+									onPress={this.confirm}
+								>
+									<View style={styles.confirmBtn}>
+										<Text
+											ellipsisMode="tail"
+											numberOfLines={1}
+											style={[styles.confirmText, subFontColor]}
+										>
+											{this._i18n("apply", "text")}
+										</Text>
+									</View>
+								</TouchableHighlight>
+							) : (
+								<View
+									testID="applyBtn"
+									style={[styles.selectionBtn, styles.confirmContainerDisabled]}
+								>
+									<View style={styles.confirmBtn}>
+										<Text
+											ellipsisMode="tail"
+											numberOfLines={1}
+											style={[styles.confirmText, styles.confirmTextDisabled]}
+										>
+											{this._i18n("apply", "text")}
+										</Text>
+									</View>
+								</View>
+							)}
 						</View>
-						{isValid ? (
-							<TouchableHighlight
-								testID="applyBtn"
-								underlayColor="rgba(255, 255, 255, 0.45)"
-								style={styles.confirmContainer}
-								onPress={this.confirm}
-							>
-								<View style={styles.confirmBtn}>
-									<Text
-										ellipsisMode="tail"
-										numberOfLines={1}
-										style={[styles.confirmText, subFontColor]}
-									>
-										{this._i18n("apply", "text")}
-									</Text>
-								</View>
-							</TouchableHighlight>
-						) : (
-							<View
-								testID="applyBtn"
-								style={[styles.confirmContainer, styles.confirmContainerDisabled]}
-							>
-								<View style={styles.confirmBtn}>
-									<Text
-										ellipsisMode="tail"
-										numberOfLines={1}
-										style={[styles.confirmText, styles.confirmTextDisabled]}
-									>
-										{this._i18n("apply", "text")}
-									</Text>
-								</View>
-							</View>
-						)}
 					</View>
 				</View>
-			</Modal>
+			</Animated.View>
 		)
 	}
 }

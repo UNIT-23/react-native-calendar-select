@@ -13,7 +13,14 @@ if (width < 350) {
 
 export default StyleSheet.create({
 	container: {
-		flex: 1
+		height  : "100%",
+		position: "absolute",
+		top     : 0,
+		left    : 0,
+		right   : 0
+	},
+	subContainer: {
+		position: "relative"
 	},
 	ctrl: {
 		flex             : 1.5,
@@ -69,7 +76,7 @@ export default StyleSheet.create({
 		textAlign: "center"
 	},
 	scroll: {
-		flex             : 9,
+		height           : "70%",
 		borderTopWidth   : 1,
 		borderBottomWidth: 1
 	},
@@ -99,11 +106,9 @@ export default StyleSheet.create({
 	},
 	confirmContainer: {
 		flex           : 1,
-		overflow       : "hidden",
-		backgroundColor: "rgba(255, 255, 255, 0.40)",
-		margin         : 14,
+		paddingVertical: 7,
 		alignSelf      : "stretch",
-		justifyContent : "center",
+		marginRight    : 5,
 		borderRadius   : 5,
 		borderWidth    : 1,
 		borderColor    : "rgba(255, 255, 255, 0.5)"
