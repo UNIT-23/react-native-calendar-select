@@ -345,6 +345,7 @@ export default class Calendar extends Component {
 		const { animationType } = this.props
 		const {
 			mainColor = "#15aaaa",
+			selectionBtn = "#15aaaa",
 			subColor = "#fff",
 			borderColor = "rgba(255, 255, 255, 0.50)",
 			topBarColor = darkenRgb(hexToRgb(mainColor), 0.2)
@@ -365,13 +366,6 @@ export default class Calendar extends Component {
 			>
 				<View elevation={5} style={styles.subContainer}>
 					<View style={[styles.ctrl, { backgroundColor: `rgb(${topBarColor})` }]}>
-						{/* <TouchableHighlight underlayColor="transparent" onPress={this.cancel}>
-							<Image
-								style={styles.closeIcon}
-								source={{ uri: ICON.close }}
-								resizeMode="cover"
-							/>
-						</TouchableHighlight> */}
 						{/* {isClearVisible && (
 							<TouchableHighlight
 								underlayColor="transparent"
@@ -465,40 +459,19 @@ export default class Calendar extends Component {
 					<Animated.View
 						style={[styles.bottomBar, { backgroundColor: `rgb(${topBarColor})` }]}
 					>
-						<View style={styles.radioBtns}>
-							{isValid ? (
-								<TouchableHighlight
-									testID="applyBtn"
-									underlayColor="rgba(255, 255, 255, 0.45)"
-									style={styles.selectionBtn}
-									onPress={this.confirm}
-								>
-									<View style={styles.confirmBtn}>
-										<Text
-											ellipsisMode="tail"
-											numberOfLines={1}
-											style={[styles.confirmText, subFontColor]}
-										>
-											{this._i18n("apply", "text")}
-										</Text>
-									</View>
-								</TouchableHighlight>
-							) : (
-								<View
-									testID="applyBtn"
-									style={[styles.selectionBtn, styles.confirmContainerDisabled]}
-								>
-									<View style={styles.confirmBtn}>
-										<Text
-											ellipsisMode="tail"
-											numberOfLines={1}
-											style={[styles.confirmText, styles.confirmTextDisabled]}
-										>
-											{this._i18n("apply", "text")}
-										</Text>
-									</View>
-								</View>
-							)}
+						<View style={styles.bottomBarInner}>
+							<TouchableHighlight
+								testID="applyBtn"
+								underlayColor="rgba(255, 255, 255, 0.45)"
+								style={[styles.confirmBtn, { backgroundColor: selectionBtn }]}
+								onPress={this.confirm}
+							>
+								<Image
+									style={styles.closeIcon}
+									source={{ uri: ICON.close }}
+									resizeMode="cover"
+								/>
+							</TouchableHighlight>
 						</View>
 					</Animated.View>
 				</View>

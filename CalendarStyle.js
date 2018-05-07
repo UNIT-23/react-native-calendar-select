@@ -22,7 +22,8 @@ export default StyleSheet.create({
 		position: "absolute",
 		top     : 0,
 		left    : 0,
-		right   : 0
+		right   : 0,
+		overflow: "hidden"
 	},
 	subContainer: {
 		height  : "100%",
@@ -85,9 +86,6 @@ export default StyleSheet.create({
 		borderWidth    : 1,
 		borderColor    : "rgba(255, 255, 255, 0.5)"
 	},
-	confirmContainerDisabled: {
-		backgroundColor: "rgba(255, 255, 255, 0.20)"
-	},
 	confirmText: {
 		fontSize  : 16,
 		fontWeight: "bold",
@@ -101,7 +99,8 @@ export default StyleSheet.create({
 		height: iconSize
 	},
 	bottomBar: {
-		height      : height / 4,
+		height      : height,
+		width       : width * 1.5,
 		position    : "absolute",
 		bottom      : 0,
 		right       : 0,
@@ -114,6 +113,26 @@ export default StyleSheet.create({
 		},
 		shadowRadius : 4,
 		shadowOpacity: 0.3,
-		zIndex       : 99
+		zIndex       : 99,
+		transform    : [
+			{ translateX: -(width * 1.5) / 3 },
+			{ translateY: height / 1.4 },
+			{ rotate: "7deg" }
+		]
+	},
+	bottomBarInner: {
+		transform: [{ rotate: "-7deg" }]
+	},
+	confirmBtn: {
+		position      : "absolute",
+		top           : -(dayWidth / 2) + 20,
+		right         : width * 1.5 / 9,
+		width         : dayWidth,
+		height        : dayWidth,
+		borderRadius  : dayWidth / 2,
+		borderWidth   : StyleSheet.hairlineWidth,
+		justifyContent: "center",
+		alignItems    : "center",
+		borderColor   : "rgba(255, 255, 255, 0.5)"
 	}
 })
