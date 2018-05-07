@@ -9,6 +9,7 @@ import PropTypes from "prop-types"
 import Moment from "moment"
 import styles from "./CalendarStyle"
 import MonthList from "./MonthList"
+import { darkenRgb, hexToRgb } from "./utils"
 
 const ICON = {
 	close:
@@ -57,7 +58,7 @@ export default class Calendar extends Component {
 			date: "M月D日"
 		},
 		en: {
-			w      : ["", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat", "Sun"],
+			w      : ["", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 			weekday: [
 				"",
 				"Monday",
@@ -113,6 +114,8 @@ export default class Calendar extends Component {
 		this.open = this.open.bind(this)
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
+
+		this.open()
 	}
 
 	componentWillMount () {
@@ -343,32 +346,32 @@ export default class Calendar extends Component {
 		const {
 			mainColor = "#15aaaa",
 			subColor = "#fff",
-			borderColor = "rgba(255, 255, 255, 0.50)"
+			borderColor = "rgba(255, 255, 255, 0.50)",
+			topBarColor = darkenRgb(hexToRgb(mainColor), 0.2)
 		} = this.props.color
 		const color = { mainColor, subColor, borderColor }
-		const mainBack = { backgroundColor: mainColor }
-		const subBack = { backgroundColor: subColor }
 		const subFontColor = { color: subColor }
 		const isValid = !startDate || endDate
-		const isClearVisible = startDate || endDate
 
 		return (
 			<Animated.View
 				style={[
 					styles.container,
-					mainBack,
-					{ transform: [{ translateY: this.modalAnimation }] }
+					{
+						backgroundColor: mainColor,
+						transform      : [{ translateY: this.modalAnimation }]
+					}
 				]}
 			>
-				<View style={styles.subContainer}>
-					<View style={styles.ctrl}>
-						<TouchableHighlight underlayColor="transparent" onPress={this.cancel}>
+				<View elevation={5} style={styles.subContainer}>
+					<View style={[styles.ctrl, { backgroundColor: `rgb(${topBarColor})` }]}>
+						{/* <TouchableHighlight underlayColor="transparent" onPress={this.cancel}>
 							<Image
 								style={styles.closeIcon}
 								source={{ uri: ICON.close }}
 								resizeMode="cover"
 							/>
-						</TouchableHighlight>
+						</TouchableHighlight> */}
 						{/* {isClearVisible && (
 							<TouchableHighlight
 								underlayColor="transparent"
@@ -380,6 +383,31 @@ export default class Calendar extends Component {
 								</Text>
 							</TouchableHighlight>
 						)} */}
+						<View style={styles.btn}>
+							<View style={styles.radioBtns}>
+								<TouchableHighlight
+									style={[styles.selectionBtn, this.radioBtnsStyle("day")]}
+									underlayColor={mainColor}
+									onPress={() => this.selection("day")}
+								>
+									<Text style={[styles.clearText, subFontColor]}>Day</Text>
+								</TouchableHighlight>
+								<TouchableHighlight
+									style={[styles.selectionBtn, this.radioBtnsStyle("week")]}
+									underlayColor={mainColor}
+									onPress={() => this.selection("week")}
+								>
+									<Text style={[styles.clearText, subFontColor]}>Week</Text>
+								</TouchableHighlight>
+								<TouchableHighlight
+									style={[styles.selectionBtn, this.radioBtnsStyle("manual")]}
+									underlayColor={mainColor}
+									onPress={() => this.selection("manual")}
+								>
+									<Text style={[styles.clearText, subFontColor]}>Manual</Text>
+								</TouchableHighlight>
+							</View>
+						</View>
 					</View>
 					{/* <View style={styles.result}>
 						<View style={styles.resultPart}>
@@ -400,7 +428,22 @@ export default class Calendar extends Component {
 							</Text>
 						</View>
 					</View> */}
-					<View style={styles.week}>
+					<View
+						style={[
+							styles.week,
+							{
+								backgroundColor: `rgb(${topBarColor})`,
+								shadowColor    : "#000000",
+								shadowOffset   : {
+									width : 0,
+									height: 7
+								},
+								shadowRadius : 4,
+								shadowOpacity: 0.3,
+								zIndex       : 99
+							}
+						]}
+					>
 						{this.daysOfTheWeek.map(item => (
 							<Text style={[styles.weekText, subFontColor]} key={item}>
 								{this._i18n(item, "w")}
@@ -419,30 +462,10 @@ export default class Calendar extends Component {
 							color={color}
 						/>
 					</View>
-					<View style={styles.btn}>
+					<Animated.View
+						style={[styles.bottomBar, { backgroundColor: `rgb(${topBarColor})` }]}
+					>
 						<View style={styles.radioBtns}>
-							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("day")]}
-								underlayColor={mainColor}
-								onPress={() => this.selection("day")}
-							>
-								<Text style={[styles.clearText, subFontColor]}>Day</Text>
-							</TouchableHighlight>
-							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("week")]}
-								underlayColor={mainColor}
-								onPress={() => this.selection("week")}
-							>
-								<Text style={[styles.clearText, subFontColor]}>Week</Text>
-							</TouchableHighlight>
-							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("manual")]}
-								underlayColor={mainColor}
-								onPress={() => this.selection("manual")}
-							>
-								<Text style={[styles.clearText, subFontColor]}>Manual</Text>
-							</TouchableHighlight>
-
 							{isValid ? (
 								<TouchableHighlight
 									testID="applyBtn"
@@ -477,7 +500,7 @@ export default class Calendar extends Component {
 								</View>
 							)}
 						</View>
-					</View>
+					</Animated.View>
 				</View>
 			</Animated.View>
 		)
