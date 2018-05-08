@@ -8,12 +8,8 @@ if (mod) {
 }
 
 let iconSize = 22
-let resultFontSize = 24
-let slashLength = 80
 if (width < 350) {
-	resultFontSize = 20
 	iconSize = 20
-	slashLength = 70
 }
 
 export default StyleSheet.create({
@@ -44,7 +40,15 @@ export default StyleSheet.create({
 		flexDirection : "row",
 		justifyContent: "space-between",
 		alignItems    : "flex-end",
-		elevation     : 5
+		elevation     : 5,
+		shadowColor   : "#000000",
+		shadowOffset  : {
+			width : 0,
+			height: 7
+		},
+		shadowRadius : 4,
+		shadowOpacity: 0.3,
+		zIndex       : 99
 	},
 	weekText: {
 		flex         : 1,
@@ -79,37 +83,27 @@ export default StyleSheet.create({
 		marginRight   : 10,
 		justifyContent: "center",
 		alignItems    : "center",
-		borderColor   : "rgba(255, 255, 255, 0.5)"
-	},
-	confirmContainer: {
-		flex           : 1,
-		paddingVertical: 7,
-		alignSelf      : "stretch",
-		marginRight    : 5,
-		borderRadius   : 5,
-		borderWidth    : 1,
-		borderColor    : "rgba(255, 255, 255, 0.5)"
-	},
-	confirmText: {
-		fontSize  : 16,
-		fontWeight: "bold",
-		textAlign : "center"
-	},
-	confirmTextDisabled: {
-		color: "rgba(255, 255, 255, 0.40)"
+		borderColor   : "#fff"
 	},
 	closeIcon: {
 		width : iconSize,
 		height: iconSize
 	},
+	bottomBarOuter: {
+		height  : height,
+		width   : width * 2,
+		position: "absolute",
+		bottom  : 0,
+		right   : 0,
+		left    : 0
+	},
 	bottomBar: {
 		height      : height,
 		width       : width * 2,
-		position    : "absolute",
-		bottom      : 0,
+		top         : dayWidth / 2,
 		right       : 0,
 		left        : 0,
-		elevation   : 5,
+		elevation   : 100,
 		shadowColor : "#000000",
 		shadowOffset: {
 			width : 0,
@@ -117,23 +111,34 @@ export default StyleSheet.create({
 		},
 		shadowRadius : 4,
 		shadowOpacity: 0.3,
-		zIndex       : 99
+		zIndex       : 10
 	},
 	bottomBarInner: {
+		top      : -dayWidth / 2.2,
+		height   : "100%",
 		width    : width,
-		transform: [{ translateX: width / 2.56 }, { rotate: "-7deg" }]
+		transform: [{ translateX: width / 2.06 }, { rotate: "-7deg" }]
 	},
 	confirmBtn: {
 		position      : "absolute",
-		top           : -(dayWidth / 2) + 20,
-		right         : width / 35,
+		top           : dayWidth / 4,
+		left          : width * 1.34,
 		width         : dayWidth,
 		height        : dayWidth,
 		borderRadius  : dayWidth / 2,
 		borderWidth   : StyleSheet.hairlineWidth,
 		justifyContent: "center",
 		alignItems    : "center",
-		borderColor   : "rgba(255, 255, 255, 0.5)"
+		borderColor   : "#fff",
+		elevation     : 101,
+		zIndex        : 100,
+		shadowColor   : "#000000",
+		shadowOffset  : {
+			width : 0,
+			height: 0
+		},
+		shadowRadius : 4,
+		shadowOpacity: 0.3
 	},
 	eventsListContainer: {
 		position        : "absolute",

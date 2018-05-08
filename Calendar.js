@@ -131,6 +131,8 @@ export default class Calendar extends Component {
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.handleBotBar = this.handleBotBar.bind(this)
+
+		this.open()
 	}
 
 	componentWillMount () {
@@ -401,7 +403,14 @@ export default class Calendar extends Component {
 							}
 						]}
 					>
-						<View style={[styles.ctrl, { backgroundColor: `rgb(${topBarColor})` }]}>
+						<View
+							style={[
+								styles.ctrl,
+								{
+									backgroundColor: `rgb(${topBarColor})`
+								}
+							]}
+						>
 							<View style={styles.btn}>
 								<View style={styles.radioBtns}>
 									<TouchableHighlight
@@ -432,15 +441,7 @@ export default class Calendar extends Component {
 							style={[
 								styles.week,
 								{
-									backgroundColor: `rgb(${topBarColor})`,
-									shadowColor    : "#000000",
-									shadowOffset   : {
-										width : 0,
-										height: 7
-									},
-									shadowRadius : 4,
-									shadowOpacity: 0.3,
-									zIndex       : 99
+									backgroundColor: `rgb(${topBarColor})`
 								}
 							]}
 						>
@@ -465,59 +466,68 @@ export default class Calendar extends Component {
 					</Animated.View>
 					<Animated.View
 						style={[
-							styles.bottomBar,
+							styles.bottomBarOuter,
 							{
-								backgroundColor: `rgb(${topBarColor})`,
-								transform      : [
+								transform: [
 									{ translateX: -(width * 1.5) / 3 },
 									{
 										translateY: this.botBarTopOffset.interpolate({
 											inputRange : [0, 100],
 											outputRange: [height / 1.2, height / 1.8]
 										})
-									},
-									{ rotate: "7deg" }
+									}
 								]
 							}
 						]}
 					>
-						<View style={styles.bottomBarInner}>
-							<SwipeContainer
-								style={{
-									position       : "absolute",
-									backgroundColor: "transparent",
-									height         : 100,
-									width          : "100%",
-									transform      : [{ translateX: -5 }, { rotate: "7deg" }]
-								}}
-								onSwipeBegin={this.handleBotBar}
+						<TouchableHighlight
+							testID="applyBtn"
+							underlayColor="rgba(255, 255, 255, 0.45)"
+							style={[styles.confirmBtn, { backgroundColor: selectionBtnColor }]}
+							onPress={this.confirm}
+						>
+							<Image
+								style={styles.closeIcon}
+								source={{ uri: ICON.close }}
+								resizeMode="cover"
 							/>
-							<TouchableHighlight
-								testID="applyBtn"
-								underlayColor="rgba(255, 255, 255, 0.45)"
-								style={[styles.confirmBtn, { backgroundColor: selectionBtnColor }]}
-								onPress={this.confirm}
-							>
-								<Image
-									style={styles.closeIcon}
-									source={{ uri: ICON.close }}
-									resizeMode="cover"
+						</TouchableHighlight>
+						<View
+							style={[
+								styles.bottomBar,
+								{
+									backgroundColor: `rgb(${topBarColor})`,
+									transform      : [{ rotate: "7deg" }]
+								}
+							]}
+						>
+							<View style={styles.bottomBarInner}>
+								<SwipeContainer
+									style={{
+										backgroundColor: "transparent",
+										height         : height / 9,
+										width          : width
+									}}
+									onSwipeBegin={this.handleBotBar}
 								/>
-							</TouchableHighlight>
-							<View style={styles.eventsListContainer}>
-								<ListView
-									dataSource={dataSource}
-									renderRow={row => (
-										<View style={{ height: 100 }}>
-											<Text>{row.text}</Text>
-										</View>
-									)}
-									renderHeader={() => <View />}
-									showsVerticalScrollIndicator={false}
-									renderScrollComponent={props => (
-										<Animated.ScrollView {...props} scrollEventThrottle={16} />
-									)}
-								/>
+								<View style={styles.eventsListContainer}>
+									<ListView
+										dataSource={dataSource}
+										renderRow={row => (
+											<View style={{ height: 100 }}>
+												<Text>{row.text}</Text>
+											</View>
+										)}
+										renderHeader={() => <View />}
+										showsVerticalScrollIndicator={false}
+										renderScrollComponent={props => (
+											<Animated.ScrollView
+												{...props}
+												scrollEventThrottle={16}
+											/>
+										)}
+									/>
+								</View>
 							</View>
 						</View>
 					</Animated.View>
