@@ -131,8 +131,6 @@ export default class Calendar extends Component {
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.handleBotBar = this.handleBotBar.bind(this)
-
-		this.open()
 	}
 
 	componentWillMount () {
@@ -301,8 +299,9 @@ export default class Calendar extends Component {
 
 	close () {
 		Animated.timing(this.modalAnimation, {
-			toValue : -height,
-			duration: 350
+			toValue        : -height,
+			duration       : 350,
+			useNativeDriver: true
 		}).start()
 	}
 
@@ -316,8 +315,9 @@ export default class Calendar extends Component {
 
 	open () {
 		Animated.timing(this.modalAnimation, {
-			toValue : 0,
-			duration: 350
+			toValue        : 0,
+			duration       : 350,
+			useNativeDriver: true
 		}).start()
 	}
 
@@ -352,15 +352,17 @@ export default class Calendar extends Component {
 	handleBotBar ({ direction }) {
 		if (SWIPE_UP === direction) {
 			Animated.timing(this.botBarTopOffset, {
-				toValue : 200,
-				duration: 350
+				toValue        : 200,
+				duration       : 350,
+				useNativeDriver: true
 			}).start()
 		}
 
 		if (SWIPE_DOWN === direction) {
 			Animated.timing(this.botBarTopOffset, {
-				toValue : 0,
-				duration: 350
+				toValue        : 0,
+				duration       : 350,
+				useNativeDriver: true
 			}).start()
 		}
 	}
