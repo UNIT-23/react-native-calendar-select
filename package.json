@@ -21,7 +21,8 @@
 		"calendar"
 	],
 	"dependencies": {
-		"moment": "^2.18.1"
+		"moment": "^2.18.1",
+		"react-native-gesture-recognizers": "^0.3.0"
 	},
 	"peerDependencies": {
 		"prop-types": "^15.6.0",

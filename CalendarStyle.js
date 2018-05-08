@@ -29,11 +29,15 @@ export default StyleSheet.create({
 		height  : "100%",
 		position: "relative"
 	},
+	topContents: {
+		height: "100%"
+	},
 	ctrl: {
 		flex          : 0.5,
 		justifyContent: "space-between",
 		flexDirection : "row",
-		alignItems    : "flex-end"
+		alignItems    : "flex-end",
+		elevation     : 5
 	},
 	week: {
 		flex          : 0.2,
@@ -100,7 +104,7 @@ export default StyleSheet.create({
 	},
 	bottomBar: {
 		height      : height,
-		width       : width * 1.5,
+		width       : width * 2,
 		position    : "absolute",
 		bottom      : 0,
 		right       : 0,
@@ -113,20 +117,16 @@ export default StyleSheet.create({
 		},
 		shadowRadius : 4,
 		shadowOpacity: 0.3,
-		zIndex       : 99,
-		transform    : [
-			{ translateX: -(width * 1.5) / 3 },
-			{ translateY: height / 1.4 },
-			{ rotate: "7deg" }
-		]
+		zIndex       : 99
 	},
 	bottomBarInner: {
-		transform: [{ rotate: "-7deg" }]
+		width    : width,
+		transform: [{ translateX: width / 2.56 }, { rotate: "-7deg" }]
 	},
 	confirmBtn: {
 		position      : "absolute",
 		top           : -(dayWidth / 2) + 20,
-		right         : width * 1.5 / 9,
+		right         : width / 35,
 		width         : dayWidth,
 		height        : dayWidth,
 		borderRadius  : dayWidth / 2,
@@ -134,5 +134,12 @@ export default StyleSheet.create({
 		justifyContent: "center",
 		alignItems    : "center",
 		borderColor   : "rgba(255, 255, 255, 0.5)"
+	},
+	eventsListContainer: {
+		position        : "absolute",
+		width           : width,
+		height          : height / 1.5,
+		marginTop       : dayWidth * 1.2,
+		marginHorizontal: 5
 	}
 })
