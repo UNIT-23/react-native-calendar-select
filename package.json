@@ -21,13 +21,13 @@
 		"calendar"
 	],
 	"dependencies": {
-		"moment": "^2.18.1",
-		"react-native-gesture-recognizers": "git+https://github.com/rdy/react-native-gesture-recognizers.git"
+		"moment": "^2.18.1"
 	},
 	"peerDependencies": {
 		"prop-types": "^15.6.0",
 		"react": "^15.4.2",
-		"react-native": "^0.41.2"
+		"react-native": "^0.41.2",
+		"react-native-gesture-recognizers": "git+https://github.com/rdy/react-native-gesture-recognizers.git"
 	},
 	"devDependencies": {
 		"babel-eslint": "^8.2.1",
