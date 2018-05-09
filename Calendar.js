@@ -44,8 +44,6 @@ class Calendar extends Component {
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
 		this.handleBotBar = this.handleBotBar.bind(this)
-
-		this.open()
 	}
 
 	componentWillMount () {
