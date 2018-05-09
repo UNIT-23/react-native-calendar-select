@@ -185,7 +185,7 @@ class Calendar extends Component {
 	close () {
 		Animated.timing(this.modalAnimation, {
 			toValue        : -height,
-			duration       : 350,
+			duration       : 300,
 			useNativeDriver: true
 		}).start()
 	}
@@ -199,9 +199,11 @@ class Calendar extends Component {
 	}
 
 	open () {
-		Animated.timing(this.modalAnimation, {
+		Animated.spring(this.modalAnimation, {
 			toValue        : 0,
-			duration       : 350,
+			speed          : 40,
+			bounciness     : 2,
+			duration       : 150,
 			useNativeDriver: true
 		}).start()
 	}
@@ -232,17 +234,21 @@ class Calendar extends Component {
 
 	handleBotBar ({ direction }) {
 		if (SWIPE_UP === direction) {
-			Animated.timing(this.botBarTopOffset, {
+			Animated.spring(this.botBarTopOffset, {
 				toValue        : 200,
-				duration       : 350,
+				speed          : 40,
+				bounciness     : 6,
+				duration       : 150,
 				useNativeDriver: true
 			}).start()
 		}
 
 		if (SWIPE_DOWN === direction) {
-			Animated.timing(this.botBarTopOffset, {
+			Animated.spring(this.botBarTopOffset, {
 				toValue        : 0,
-				duration       : 350,
+				speed          : 40,
+				bounciness     : 6,
+				duration       : 150,
 				useNativeDriver: true
 			}).start()
 		}

@@ -14,7 +14,7 @@ if (width < 350) {
 
 export default StyleSheet.create({
 	container: {
-		height  : "100%",
+		height  : height,
 		position: "absolute",
 		top     : 0,
 		left    : 0,
