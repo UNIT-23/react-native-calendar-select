@@ -1,28 +1,13 @@
-## react-native-calendar-select [![Build Status](https://travis-ci.org/Tinysymphony/react-native-calendar-select.svg?branch=master)](https://travis-ci.org/Tinysymphony/react-native-calendar-select) [![Coverage Status](https://coveralls.io/repos/github/Tinysymphony/react-native-calendar-select/badge.svg?branch=master)](https://coveralls.io/github/Tinysymphony/react-native-calendar-select?branch=master)
+## react-native-calendar-select
 
-A date picker component like Airbnb. You can select a date period from the calendar modal.
+Calendar and Events listing for React Native
 
 ### Examples
 
 #### Selection Types Example
 
-<a href="#selectionType" id="selectionType"><img src="./screenshots/selectionTypeBtns.png" width="200"></a>
-
-#### iOS Examples
-
-<a href="#ios-en" id="ios-en"><img src="./screenshots/ios-en.gif" align="left" width="200"></a>
-
-<a href="#ios-zh" id="ios-zh"><img src="./screenshots/ios-zh.gif" align="left" width="200"></a>
-
-<a href="#ios-jp" id="ios-jp"><img src="./screenshots/ios-jp.gif" width="200"></a>
-
-#### Android Examples
-
-<a href="#a-en" id="a-en"><img src="./screenshots/a-en.gif" align="left" width="200"></a>
-
-<a href="#a-zh" id="a-zh"><img src="./screenshots/a-zh.gif" align="left" width="200"></a>
-
-<a href="#a-jp" id="a-jp"><img src="./screenshots/a-jp.gif" width="200"></a>
+<a href="#selectionType" id="selectionType"><img src="./screenshots/eventsLists1.png" width="200"></a>
+<a href="#selectionType" id="selectionType"><img src="./screenshots/eventsLists2.png" width="200"></a>
 
 ### Usage
 
@@ -30,8 +15,10 @@ A date picker component like Airbnb. You can select a date period from the calen
 
 **install from npm**
 
+It will be published soon to npm, but for now.
+
 ```shell
-npm install --save react-native-calendar-select
+npm install --save https://github.com/ahmad2smile/react-native-calendar-select/tarball/master
 ```
 
 **import in project**
@@ -92,6 +79,8 @@ render() {
         customI18n={customI18n}
         color={color}
         format="YYYYMMDD"
+        disableEventsList={false}
+        eventsList={MyListComponent}
         minDate="20170510"
         maxDate="20180312"
         startDate={this.state.startDate}
@@ -105,20 +94,21 @@ render() {
 
 ### Properties
 
-| Property      | Type                          | Default      | Description                                                                                                                                                         |
-| ------------- | ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| i18n          | String                        | 'en'         | Language of the component, supports `en` / `zh` / `jp`.                                                                                                             |
-| dow           | Number                        | 1            | Day of the week default is 'Monday'                                                                                                                                 |
-| customI18n    | Object                        | {}           | Customize text of the component, the structure of this object is shown in the example above.                                                                        |
-| color         | Object                        | {}           | Customize color.                                                                                                                                                    |
-| format        | string                        | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
-| minDate       | String / Object               | -            | Min date of calendar                                                                                                                                                |
-| maxDate       | String / Object               | -            | Max date of calendar                                                                                                                                                |
-| startDate     | String / Object               | null         | Start date of selection                                                                                                                                             |
-| endDate       | String / Object               | null         | End date of selection                                                                                                                                               |
-| onConfirm     | Function                      | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
-| selectionType | enum(`manual`, `week`, `day`) | "manual"     | Initial (optional) selection type can be one of `manual`, `week` and `day`                                                                                          |
-| animationType | enum(`slide`, `fade`, `none`) | "slide"      | Initial (optional) animation type can be one of `slide`, `fade` and `none`                                                                                          |
+| Property          | Type                          | Default      | Description                                                                                                                                                         |
+| ----------------- | ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| i18n              | String                        | 'en'         | Region for `moment`                                                                                                                                                 |
+| dow               | Number                        | 1            | Day of the week default 1 is 'Monday'                                                                                                                               |
+| disableEventsList | Boolean                       | false        | Are you going to show a events list of not                                                                                                                          |
+| eventsList        | Node                          | -            | Custom Component for events                                                                                                                                         |
+| color             | Object                        | {}           | Customize color.                                                                                                                                                    |
+| format            | string                        | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
+| minDate           | String / Object               | -            | Min date of calendar                                                                                                                                                |
+| maxDate           | String / Object               | -            | Max date of calendar                                                                                                                                                |
+| startDate         | String / Object               | null         | Start date of selection                                                                                                                                             |
+| endDate           | String / Object               | null         | End date of selection                                                                                                                                               |
+| onConfirm         | Function                      | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
+| selectionType     | enum(`manual`, `week`, `day`) | "manual"     | Initial (optional) selection type can be one of `manual`, `week` and `day`                                                                                          |
+| animationType     | enum(`slide`, `fade`, `none`) | "slide"      | Initial (optional) animation type can be one of `slide`, `fade` and `none`                                                                                          |
 
 ### Instance methods
 
@@ -132,10 +122,14 @@ render() {
 
 ### Color properties
 
-| Prop        | Description                               |
-| ----------- | ----------------------------------------- |
-| subColor    | Sets the Text Color                       |
-| mainColor   | Sets the Background Color of the Calendar |
-| borderColor | Sets the Color of the Calendar border     |
+| Prop              | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| subColor          | Sets the Text Color                                 |
+| mainColor         | Sets the Background Color of the Calendar           |
+| borderColor       | Sets the Color of the Calendar border               |
+| topBarColor       | Upper bar color where type of selection btns are    |
+| selectionBtnColor | Lower bar color where events List and select btn is |
 
 LICENSE MIT
+
+dev: [Ahmad](https://github.com/ahmad2smile/)
