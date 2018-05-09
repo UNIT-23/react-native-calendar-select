@@ -146,5 +146,8 @@ export default StyleSheet.create({
 		height          : height / 1.5,
 		marginTop       : dayWidth * 1.2,
 		marginHorizontal: 5
+	},
+	text: {
+		color: "#fff"
 	}
 })

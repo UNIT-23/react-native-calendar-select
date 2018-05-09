@@ -13,16 +13,12 @@ import SwipeContainer from "./components/SwipeContainer/SwipeContainer"
 import { darkenRgb, hexToRgb } from "./utils"
 
 import styles from "./CalendarStyle"
+import SelectionIcon from "./components/SelectionIcon/SelectionIcon"
 
 const { height, width } = Dimensions.get("window")
 const {
 	directions: { SWIPE_UP, SWIPE_DOWN }
 } = swipeable
-
-const ICON = {
-	close:
-		"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADGklEQVR4Xu3b3XXTMBTAcV1Leu8I3YAyAWECygSlE9BOQJmAdAK6QWGCphNQNmAE+mzZl6Mc5xzXtiLJ1r0STfLqJM3/Z9muPwTiwF9w4P3iCHAcAQ4BRDxt2/aDEOKkqqqfAPD0P2EZYy6EEJ/sbwaATVVVtwDwd9gwuQkYY+wHv9n43QcQca21vi4dARFPmqa5F0Ks+r8VEZ+UUu+HCCMAu+abpvnVj+990Z1S6rJUBBtvjHkAgLOp34iIX7XWN/1lI4Cmaa4Q0a5916tIBF+8jUHER631i5ExAqjr+gYAvnjWclEIIfHBAIh41m0CvpFeBEJofBdzqZS627sJ2IV1Xa8B4LNPQAiRFSEmfmr4b48QrkhjjJWyhxLfKwtCZPxvpdQq+DC4Ky4VIVX83hFQKkLK+CAA+6ZSRkLq+GCAEhAo4qMAciJQxUcD5ECgjJ8FwIlAHT8bgAOBI34RACUCV/xiAAoEzvgkACkRuOOTAaRAyBGfFGAJQq745ABzEHLGkwDEItgLMK5reP3zcER0ntL6ztf3LSe7MRJxAuX9/VTxZCNgxqm0E4EynhwgcnMYIVDHswDMReCIZwOIReCKZwOIOdR12wHbhVayo8Bug54Rv/soCwIpwIJ4NgQygATxLAgkAAnjyRGSA8TE27199+BFtjtQSQFi43e3qyL+bU6+Y0wGMDd+xr/NSRGSACyNz4mwGCBVfC6ERQCp43MgzAagiudGmAVAHc+JEA3AFc+FEAXAHc+BEAyQK54aIQggdzwlgheglHgqhL0ApcVTIDgBSo1PjTAJUHp8SgTXfIGH4fP2U3cuOK/euu6chJ5KI+Kt1vpq+D0jgG6yxHfnrZpuQQnxsSNBSvl2OPNl6nH5DQC82wdQUnwMAgBcSynX/bZogBLjIxA+KqV++ACcEyZKjg9AeJZSnobMGbLzbuxm8KYvZZ+3V0qdTz1y7ttfcC+fmO/wjIjnWuuNdydo39AdBu0eczu/BgDsdbgXMy24o2L/nn3wom3bFSL+kVLaFTqaMrdti/3i1/b+I8BrW6OxPQc/Av4BDSZYbnPWwJkAAAAASUVORK5CYII="
-}
 
 class Calendar extends Component {
 	constructor (props) {
@@ -143,10 +139,8 @@ class Calendar extends Component {
 			if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
 				const startDay = day.clone().startOf("week")
 				this.setState({
-					startDate     : startDay,
-					endDate       : null,
-					endDateText   : "",
-					endWeekdayText: ""
+					startDate: startDay,
+					endDate  : null
 				})
 			} else if (startDate && !endDate) {
 				const endDay = day.clone().endOf("week")
@@ -159,10 +153,8 @@ class Calendar extends Component {
 
 		if ((!startDate && !endDate) || day < startDate || (startDate && endDate)) {
 			this.setState({
-				startDate     : day,
-				endDate       : null,
-				endDateText   : "",
-				endWeekdayText: ""
+				startDate: day,
+				endDate  : null
 			})
 		} else if (startDate && !endDate && day > startDate) {
 			this.setState({
@@ -216,12 +208,8 @@ class Calendar extends Component {
 
 	clear () {
 		this.setState({
-			startDate       : null,
-			endDate         : null,
-			startDateText   : "",
-			startWeekdayText: "",
-			endDateText     : "",
-			endWeekdayText  : ""
+			startDate: null,
+			endDate  : null
 		})
 	}
 
@@ -261,7 +249,7 @@ class Calendar extends Component {
 	}
 
 	render () {
-		const { selectionType, dataSource } = this.state
+		const { selectionType, dataSource, startDate, endDate } = this.state
 		const { eventsList, disableEventsList } = this.props
 		const {
 			mainColor = "#15aaaa",
@@ -373,16 +361,11 @@ class Calendar extends Component {
 						]}
 					>
 						<TouchableHighlight
-							testID="applyBtn"
 							underlayColor="rgba(255, 255, 255, 0.45)"
 							style={[styles.confirmBtn, { backgroundColor: selectionBtnColor }]}
 							onPress={this.confirm}
 						>
-							<Image
-								style={styles.closeIcon}
-								source={{ uri: ICON.close }}
-								resizeMode="cover"
-							/>
+							<SelectionIcon valid={!!startDate && !!endDate} />
 						</TouchableHighlight>
 						<View
 							style={[
@@ -404,7 +387,11 @@ class Calendar extends Component {
 								/>
 								<View style={styles.eventsListContainer}>
 									{!disableEventsList &&
-										!eventsList && <Text>Your Events go here</Text>}
+										!eventsList && (
+											<Text style={styles.text}>
+												Your Events List go here
+											</Text>
+										)}
 									{eventsList}
 								</View>
 							</View>
