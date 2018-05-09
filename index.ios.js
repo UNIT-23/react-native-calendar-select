@@ -76,6 +76,7 @@ export default class calendar extends Component {
 					ref={calendar => {
 						this.calendar = calendar
 					}}
+					eventsList={<Text style={styles.text}>Your Events List go here</Text>}
 					format="YYYYMMDD"
 					minDate="20170510"
 					maxDate="20180412"

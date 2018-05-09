@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from "react"
-import { Animated, View, Text, Image, TouchableHighlight, Dimensions } from "react-native"
+import { Animated, View, Text, TouchableHighlight, Dimensions } from "react-native"
 import PropTypes from "prop-types"
 import Moment from "moment"
 import { swipeable } from "react-native-gesture-recognizers"
@@ -249,8 +249,8 @@ class Calendar extends Component {
 	}
 
 	render () {
-		const { selectionType, dataSource, startDate, endDate } = this.state
-		const { eventsList, disableEventsList } = this.props
+		const { selectionType, startDate, endDate } = this.state
+		const { eventsList } = this.props
 		const {
 			mainColor = "#15aaaa",
 			selectionBtnColor = "#15aaaa",
@@ -377,23 +377,17 @@ class Calendar extends Component {
 							]}
 						>
 							<View style={styles.bottomBarInner}>
-								<SwipeContainer
-									style={{
-										backgroundColor: "transparent",
-										height         : height / 9,
-										width          : width
-									}}
-									onSwipeBegin={this.handleBotBar}
-								/>
-								<View style={styles.eventsListContainer}>
-									{!disableEventsList &&
-										!eventsList && (
-											<Text style={styles.text}>
-												Your Events List go here
-											</Text>
-										)}
-									{eventsList}
-								</View>
+								{!!eventsList && (
+									<SwipeContainer
+										style={{
+											backgroundColor: "transparent",
+											height         : height / 9,
+											width          : width
+										}}
+										onSwipeBegin={this.handleBotBar}
+									/>
+								)}
+								<View style={styles.eventsListContainer}>{eventsList}</View>
 							</View>
 						</View>
 					</Animated.View>
@@ -425,12 +419,11 @@ Calendar.propTypes = {
 		topBarColor      : PropTypes.string,
 		selectionBtnColor: PropTypes.string
 	}),
-	disableEventsList: PropTypes.bool,
-	eventsList       : PropTypes.node,
-	minDate          : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-	maxDate          : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-	selectionType    : PropTypes.oneOf(["manual", "week", "day"]),
-	animationType    : PropTypes.oneOf(["none", "slide", "fade"])
+	eventsList   : PropTypes.node,
+	minDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+	maxDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+	selectionType: PropTypes.oneOf(["manual", "week", "day"]),
+	animationType: PropTypes.oneOf(["none", "slide", "fade"])
 }
 
 export default Calendar

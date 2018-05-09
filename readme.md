@@ -80,7 +80,7 @@ render() {
         color={color}
         format="YYYYMMDD"
         disableEventsList={false}
-        eventsList={MyListComponent}
+        eventsList={<MyListComponent />}
         minDate="20170510"
         maxDate="20180312"
         startDate={this.state.startDate}
@@ -94,21 +94,20 @@ render() {
 
 ### Properties
 
-| Property          | Type                          | Default      | Description                                                                                                                                                         |
-| ----------------- | ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| i18n              | String                        | 'en'         | Region for `moment`                                                                                                                                                 |
-| dow               | Number                        | 1            | Day of the week default 1 is 'Monday'                                                                                                                               |
-| disableEventsList | Boolean                       | false        | Are you going to show a events list of not                                                                                                                          |
-| eventsList        | Node                          | -            | Custom Component for events                                                                                                                                         |
-| color             | Object                        | {}           | Customize color.                                                                                                                                                    |
-| format            | string                        | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
-| minDate           | String / Object               | -            | Min date of calendar                                                                                                                                                |
-| maxDate           | String / Object               | -            | Max date of calendar                                                                                                                                                |
-| startDate         | String / Object               | null         | Start date of selection                                                                                                                                             |
-| endDate           | String / Object               | null         | End date of selection                                                                                                                                               |
-| onConfirm         | Function                      | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
-| selectionType     | enum(`manual`, `week`, `day`) | "manual"     | Initial (optional) selection type can be one of `manual`, `week` and `day`                                                                                          |
-| animationType     | enum(`slide`, `fade`, `none`) | "slide"      | Initial (optional) animation type can be one of `slide`, `fade` and `none`                                                                                          |
+| Property      | Type                          | Default      | Description                                                                                                                                                         |
+| ------------- | ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| i18n          | String                        | 'en'         | Region for `moment`                                                                                                                                                 |
+| dow           | Number                        | 1            | Day of the week default 1 is 'Monday'                                                                                                                               |  |
+| eventsList    | Node                          | -            | Custom Component for events                                                                                                                                         |
+| color         | Object                        | {}           | Customize color.                                                                                                                                                    |
+| format        | string                        | 'YYYY-MM-DD' | Define date format, you can also pass Date Object or Moment Object as props.                                                                                        |
+| minDate       | String / Object               | -            | Min date of calendar                                                                                                                                                |
+| maxDate       | String / Object               | -            | Max date of calendar                                                                                                                                                |
+| startDate     | String / Object               | null         | Start date of selection                                                                                                                                             |
+| endDate       | String / Object               | null         | End date of selection                                                                                                                                               |
+| onConfirm     | Function                      | -            | Callback function when the period is confirmed, receives an object as only parameter, contains `startDate` / `endDate` / `startMoment` / `endMoment` four property. |
+| selectionType | enum(`manual`, `week`, `day`) | "manual"     | Initial (optional) selection type can be one of `manual`, `week` and `day`                                                                                          |
+| animationType | enum(`slide`, `fade`, `none`) | "slide"      | Initial (optional) animation type can be one of `slide`, `fade` and `none`                                                                                          |
 
 ### Instance methods
 
