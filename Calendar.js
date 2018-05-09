@@ -1,9 +1,5 @@
-/**
- * Created by TinySymphony on 2017-05-08.
- */
-
 import React, { Component } from "react"
-import { Animated, View, Text, TouchableHighlight, Dimensions } from "react-native"
+import { Animated, View, Text, TouchableHighlight, Dimensions, Modal } from "react-native"
 import PropTypes from "prop-types"
 import Moment from "moment"
 import { swipeable } from "react-native-gesture-recognizers"
@@ -25,7 +21,8 @@ class Calendar extends Component {
 		super(props)
 
 		this.state = {
-			selectionType: "manual"
+			selectionType: "manual",
+			showModal    : false
 		}
 
 		this.modalAnimation = new Animated.Value(-height)
@@ -43,6 +40,7 @@ class Calendar extends Component {
 		this.open = this.open.bind(this)
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
+		this.animateOpen = this.animateOpen.bind(this)
 		this.handleBotBar = this.handleBotBar.bind(this)
 	}
 
@@ -185,7 +183,11 @@ class Calendar extends Component {
 			toValue        : -height,
 			duration       : 300,
 			useNativeDriver: true
-		}).start()
+		}).start(() => {
+			this.setState({
+				showModal: false
+			})
+		})
 	}
 
 	selection (selectionType) {
@@ -197,6 +199,12 @@ class Calendar extends Component {
 	}
 
 	open () {
+		this.setState({
+			showModal: true
+		})
+	}
+
+	animateOpen () {
 		Animated.spring(this.modalAnimation, {
 			toValue        : 0,
 			speed          : 40,
@@ -253,7 +261,7 @@ class Calendar extends Component {
 	}
 
 	render () {
-		const { selectionType, startDate, endDate } = this.state
+		const { selectionType, startDate, endDate, showModal } = this.state
 		const { eventsList } = this.props
 		const {
 			mainColor = "#15aaaa",
@@ -266,137 +274,154 @@ class Calendar extends Component {
 		const subFontColor = { color: subColor }
 
 		return (
-			<Animated.View
-				style={[
-					styles.container,
-					{
-						backgroundColor: mainColor,
-						transform      : [{ translateY: this.modalAnimation }]
-					}
-				]}
-			>
-				<View style={styles.subContainer}>
-					<Animated.View
-						style={[
-							styles.topContents,
-							{
-								opacity: this.botBarTopOffset.interpolate({
-									inputRange : [0, 200],
-									outputRange: [1, 0.3]
-								})
-							}
-						]}
-					>
-						<View
+			<Modal transparent visible={showModal} onShow={this.animateOpen} animationType="none">
+				<Animated.View
+					style={[
+						styles.container,
+						{
+							backgroundColor: mainColor,
+							transform      : [{ translateY: this.modalAnimation }]
+						}
+					]}
+				>
+					<View style={styles.subContainer}>
+						<Animated.View
 							style={[
-								styles.ctrl,
+								styles.topContents,
 								{
-									backgroundColor: `rgb(${topBarColor})`
+									opacity: this.botBarTopOffset.interpolate({
+										inputRange : [0, 200],
+										outputRange: [1, 0.3]
+									})
 								}
 							]}
 						>
-							<View style={styles.btn}>
-								<View style={styles.radioBtns}>
-									<TouchableHighlight
-										style={[styles.selectionBtn, this.radioBtnsStyle("day")]}
-										underlayColor={mainColor}
-										onPress={() => this.selection("day")}
-									>
-										<Text style={[styles.clearText, subFontColor]}>Day</Text>
-									</TouchableHighlight>
-									<TouchableHighlight
-										style={[styles.selectionBtn, this.radioBtnsStyle("week")]}
-										underlayColor={mainColor}
-										onPress={() => this.selection("week")}
-									>
-										<Text style={[styles.clearText, subFontColor]}>Week</Text>
-									</TouchableHighlight>
-									<TouchableHighlight
-										style={[styles.selectionBtn, this.radioBtnsStyle("manual")]}
-										underlayColor={mainColor}
-										onPress={() => this.selection("manual")}
-									>
-										<Text style={[styles.clearText, subFontColor]}>Manual</Text>
-									</TouchableHighlight>
+							<View
+								style={[
+									styles.ctrl,
+									{
+										backgroundColor: `rgb(${topBarColor})`
+									}
+								]}
+							>
+								<View style={styles.btn}>
+									<View style={styles.radioBtns}>
+										<TouchableHighlight
+											style={[
+												styles.selectionBtn,
+												this.radioBtnsStyle("day")
+											]}
+											underlayColor={mainColor}
+											onPress={() => this.selection("day")}
+										>
+											<Text style={[styles.clearText, subFontColor]}>
+												Day
+											</Text>
+										</TouchableHighlight>
+										<TouchableHighlight
+											style={[
+												styles.selectionBtn,
+												this.radioBtnsStyle("week")
+											]}
+											underlayColor={mainColor}
+											onPress={() => this.selection("week")}
+										>
+											<Text style={[styles.clearText, subFontColor]}>
+												Week
+											</Text>
+										</TouchableHighlight>
+										<TouchableHighlight
+											style={[
+												styles.selectionBtn,
+												this.radioBtnsStyle("manual")
+											]}
+											underlayColor={mainColor}
+											onPress={() => this.selection("manual")}
+										>
+											<Text style={[styles.clearText, subFontColor]}>
+												Manual
+											</Text>
+										</TouchableHighlight>
+									</View>
 								</View>
 							</View>
-						</View>
-						<View
-							style={[
-								styles.week,
-								{
-									backgroundColor: `rgb(${topBarColor})`
-								}
-							]}
-						>
-							{this.daysOfTheWeek.map(dayNum => (
-								<Text style={[styles.weekText, subFontColor]} key={dayNum}>
-									{this.weekDaysNames[dayNum]}
-								</Text>
-							))}
-						</View>
-						<View style={[styles.scroll, { borderColor }]}>
-							<MonthList
-								today={this._today}
-								minDate={this._minDate}
-								maxDate={this._maxDate}
-								startDate={this.state.startDate}
-								endDate={this.state.endDate}
-								onChoose={day => this._onChoose(day, selectionType)}
-								i18n={this.props.i18n}
-								color={color}
-							/>
-						</View>
-					</Animated.View>
-					<Animated.View
-						style={[
-							styles.bottomBarOuter,
-							{
-								transform: [
-									{ translateX: -(width * 1.5) / 3 },
+							<View
+								style={[
+									styles.week,
 									{
-										translateY: this.botBarTopOffset.interpolate({
-											inputRange : [0, 100],
-											outputRange: [height / 1.2, height / 1.8]
-										})
+										backgroundColor: `rgb(${topBarColor})`
 									}
-								]
-							}
-						]}
-					>
-						<TouchableHighlight
-							underlayColor="rgba(255, 255, 255, 0.45)"
-							style={[styles.confirmBtn, { backgroundColor: selectionBtnColor }]}
-							onPress={this.confirm}
-						>
-							<SelectionIcon valid={!!startDate && !!endDate} />
-						</TouchableHighlight>
-						<View
+								]}
+							>
+								{this.daysOfTheWeek.map(dayNum => (
+									<Text style={[styles.weekText, subFontColor]} key={dayNum}>
+										{this.weekDaysNames[dayNum]}
+									</Text>
+								))}
+							</View>
+							<View style={[styles.scroll, { borderColor }]}>
+								<MonthList
+									today={this._today}
+									minDate={this._minDate}
+									maxDate={this._maxDate}
+									startDate={this.state.startDate}
+									endDate={this.state.endDate}
+									onChoose={day => this._onChoose(day, selectionType)}
+									i18n={this.props.i18n}
+									color={color}
+								/>
+							</View>
+						</Animated.View>
+						<Animated.View
 							style={[
-								styles.bottomBar,
+								styles.bottomBarOuter,
 								{
-									backgroundColor: `rgb(${topBarColor})`,
-									transform      : [{ rotate: "7deg" }]
+									transform: [
+										{ translateX: -(width * 1.5) / 3 },
+										{
+											translateY: this.botBarTopOffset.interpolate({
+												inputRange : [0, 100],
+												outputRange: [height / 1.2, height / 1.8]
+											})
+										}
+									]
 								}
 							]}
 						>
-							<View style={styles.bottomBarInner}>
-								{!!eventsList && (
-									<SwipeContainer
-										style={{
-											backgroundColor: "transparent",
-											height         : height / 9,
-											width          : width
-										}}
-										onSwipeBegin={this.handleBotBar}
-									/>
-								)}
-								<View style={styles.eventsListContainer}>{eventsList}</View>
+							<TouchableHighlight
+								underlayColor="rgba(255, 255, 255, 0.45)"
+								style={[styles.confirmBtn, { backgroundColor: selectionBtnColor }]}
+								onPress={this.confirm}
+							>
+								<SelectionIcon valid={!!startDate && !!endDate} />
+							</TouchableHighlight>
+							<View
+								style={[
+									styles.bottomBar,
+									{
+										backgroundColor: `rgb(${topBarColor})`,
+										transform      : [{ rotate: "7deg" }]
+									}
+								]}
+							>
+								<View style={styles.bottomBarInner}>
+									{!!eventsList && (
+										<SwipeContainer
+											style={{
+												backgroundColor: "transparent",
+												height         : height / 9,
+												width          : width
+											}}
+											onSwipeBegin={this.handleBotBar}
+										/>
+									)}
+									<View style={styles.eventsListContainer}>{eventsList}</View>
+								</View>
 							</View>
-						</View>
-					</Animated.View>
-				</View>
-			</Animated.View>
+						</Animated.View>
+					</View>
+				</Animated.View>
+			</Modal>
 		)
 	}
 }
