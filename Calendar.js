@@ -274,7 +274,13 @@ class Calendar extends Component {
 		const subFontColor = { color: subColor }
 
 		return (
-			<Modal transparent visible={showModal} onShow={this.animateOpen} animationType="none">
+			<Modal
+				hardwareAccelerated
+				transparent
+				visible={showModal}
+				onShow={this.animateOpen}
+				animationType="none"
+			>
 				<Animated.View
 					style={[
 						styles.container,
