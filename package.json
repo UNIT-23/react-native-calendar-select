@@ -15,11 +15,14 @@
 		"coverage": "cat ./coverage/lcov.info | coveralls",
 		"changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
 	},
-	"keywords": ["react-native", "react-native-calendar-xg", "calendar"],
+	"keywords": [
+		"react-native",
+		"react-native-calendar-xg",
+		"calendar"
+	],
 	"dependencies": {
 		"moment": "^2.18.1",
-		"react-native-gesture-recognizers":
-			"git+https://github.com/rdy/react-native-gesture-recognizers.git"
+		"react-native-gesture-recognizers": "git+https://github.com/rdy/react-native-gesture-recognizers.git"
 	},
 	"peerDependencies": {
 		"prop-types": "^15.6.0",
@@ -55,7 +58,9 @@
 		"preset": "react-native",
 		"verbose": true,
 		"collectCoverage": true,
-		"moduleFileExtensions": ["js"]
+		"moduleFileExtensions": [
+			"js"
+		]
 	},
 	"config": {
 		"commitizen": {
