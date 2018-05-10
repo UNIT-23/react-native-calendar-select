@@ -6,7 +6,6 @@ import { swipeable } from "react-native-gesture-recognizers"
 
 import MonthList from "./MonthList"
 import SwipeContainer from "./components/SwipeContainer/SwipeContainer"
-import { darkenRgb, hexToRgb } from "./utils"
 
 import styles from "./CalendarStyle"
 import SelectionIcon from "./components/SelectionIcon/SelectionIcon"
@@ -268,7 +267,7 @@ class Calendar extends Component {
 			selectionBtnColor = "#15aaaa",
 			subColor = "#fff",
 			borderColor = "#fff",
-			topBarColor = darkenRgb(hexToRgb(mainColor), 0.2)
+			topBarColor = "#15aaaa"
 		} = this.props.color
 		const color = { mainColor, subColor, borderColor }
 		const subFontColor = { color: subColor }
@@ -306,7 +305,7 @@ class Calendar extends Component {
 								style={[
 									styles.ctrl,
 									{
-										backgroundColor: `rgb(${topBarColor})`
+										backgroundColor: topBarColor
 									}
 								]}
 							>
@@ -355,7 +354,7 @@ class Calendar extends Component {
 								style={[
 									styles.week,
 									{
-										backgroundColor: `rgb(${topBarColor})`
+										backgroundColor: topBarColor
 									}
 								]}
 							>
@@ -405,7 +404,7 @@ class Calendar extends Component {
 								style={[
 									styles.bottomBar,
 									{
-										backgroundColor: `rgb(${topBarColor})`,
+										backgroundColor: topBarColor,
 										transform      : [{ rotate: "7deg" }]
 									}
 								]}
