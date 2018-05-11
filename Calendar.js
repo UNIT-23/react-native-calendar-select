@@ -274,7 +274,6 @@ class Calendar extends Component {
 
 		return (
 			<Modal
-				hardwareAccelerated
 				transparent
 				visible={showModal}
 				onShow={this.animateOpen}
