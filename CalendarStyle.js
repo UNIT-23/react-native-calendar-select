@@ -44,7 +44,7 @@ export default StyleSheet.create({
 	resultText: {
 		fontSize      : resultFontSize,
 		marginVertical: 4,
-		fontWeight    : "200"
+		color: '#252631'
 	},
 	clearText: {
 		fontSize  : 18,
@@ -61,17 +61,17 @@ export default StyleSheet.create({
 		flex          : 1,
 		flexDirection : "row",
 		justifyContent: "space-between",
-		alignItems    : "center"
+		alignItems    : "center",
+		backgroundColor: '#F8FAFB'
 	},
 	weekText: {
 		flex     : 1,
 		fontSize : weekTextFontSize,
-		textAlign: "center"
+		textAlign: "center",
+		color: '#252631'
 	},
 	scroll: {
-		flex             : 9,
-		borderTopWidth   : 1,
-		borderBottomWidth: 1
+		flex             : 9
 	},
 	scrollArea: {
 		flex: 1
@@ -88,14 +88,26 @@ export default StyleSheet.create({
 		justifyContent: "flex-end",
 		paddingLeft   : 9
 	},
-	selectionBtn: {
+	tabBarBtn: {
 		flex           : 1,
 		paddingVertical: 7,
 		alignSelf      : "stretch",
+
 		marginRight    : 5,
 		borderRadius   : 5,
 		borderWidth    : 1,
-		borderColor    : "rgba(255, 255, 255, 0.5)"
+		borderColor    : "#1DB954"
+	},
+	tabBarBtnText: {
+		color: '#252631',
+		fontSize  : 18,
+		textAlign : "center"
+	},
+	tabBarSelectedBtn:{
+
+	},
+	tabBarSelectedBtnText:{
+		color: '#1DB954',
 	},
 	confirmContainer: {
 		flex           : 1,
@@ -117,7 +129,7 @@ export default StyleSheet.create({
 		textAlign : "center"
 	},
 	confirmTextDisabled: {
-		color: "rgba(255, 255, 255, 0.40)"
+		color: "#98A9BC"
 	},
 	closeIcon: {
 		width : iconSize,

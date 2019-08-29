@@ -116,15 +116,14 @@ export default class Month extends Component {
 		)
 	}
 	render () {
-		const { month, color } = this.props
-		const subColor = { color: color.subColor }
+		const { month, styles:customStyles } = this.props
 		const titleText = this._getMonthText()
 		const dayList = this._getDayList(month.clone())
 		const rowArray = new Array(dayList.length / 7).fill("")
 		return (
 			<View style={styles.month}>
-				<View style={styles.monthTitle}>
-					<Text style={[styles.monthTitleText, subColor]}>{titleText}</Text>
+				<View style={[styles.monthTitle, customStyles.monthTitle]}>
+					<Text style={[styles.monthTitleText, customStyles.monthTitleText]}>{titleText}</Text>
 				</View>
 				<View style={styles.days}>
 					{rowArray.map((item, i) =>

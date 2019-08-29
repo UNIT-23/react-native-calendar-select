@@ -47,29 +47,26 @@ export default class Day extends Component {
 		return false
 	}
 	render () {
-		const { date, color } = this.props
+		const { date, styles:customStyles, underlayColor } = this.props
 		const text = date ? date.date() : ""
-		const mainColor = { color: color.mainColor }
-		const subColor = { color: color.subColor }
-		const mainBack = { backgroundColor: color.mainColor }
-		const subBack = { backgroundColor: color.subColor }
+		
 		return (
 			<View
 				style={[
 					styles.dayContainer,
-					this.isMid && subBack,
+					...(this.isMid && [styles.selectedMidDays, customStyles.selectedMidDays] || []),
 					this.isStartPart && styles.startContainer,
 					this.isEnd && styles.endContainer,
-					(this.isStartPart || this.isEnd) && subBack
+					...((this.isStartPart || this.isEnd) && [styles.selectedMidDays, customStyles.selectedMidDays] || [])
 				]}
 			>
 				{this.isValid ? (
 					<TouchableHighlight
-						style={[styles.day, this.isToday && styles.today, this.isFocus && subBack]}
-						underlayColor="rgba(255, 255, 255, 0.35)"
+						style={[styles.day, this.isToday && styles.today, ...((this.isStart || this.isEnd) && [styles.selectedDay, customStyles.selectedDay]: [])]}
+						underlayColor={underlayColor}
 						onPress={this._chooseDay}
 					>
-						<Text style={[styles.dayText, subColor, this.isFocus && mainColor]}>
+						<Text style={[styles.dayText, customStyles.dayText, ...(this.isFocus && [styles.selectedDayText, customStyles.selectedDayText]|| []), ...((this.isMid && !this.isEnd) && [styles.selectedMidDaysText, customStyles.selectedMidDaysText]|| [])]}>
 							{text}
 						</Text>
 					</TouchableHighlight>

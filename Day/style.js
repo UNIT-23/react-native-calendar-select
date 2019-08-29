@@ -36,12 +36,24 @@ export default StyleSheet.create({
   },
   dayText: {
     fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#252631'
   },
   dayTextDisabled: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.54)',
+    color: '#98A9BC',
     textAlign: 'center'
+  },
+  selectedMidDays: {
+    backgroundColor: '#f2fdf6'
+  },
+  selectedMidDaysText: {
+    color: '#1DB954'
+  },
+  selectedDay: {
+    backgroundColor: '#1DB954'
+  },
+  selectedDayText: {
+    color: '#fff'
   }
 });

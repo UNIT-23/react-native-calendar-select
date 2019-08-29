@@ -10,32 +10,62 @@ import Moment from "moment"
 import styles from "./CalendarStyle"
 import MonthList from "./MonthList"
 const ICON = {
-	close:
-		"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADGklEQVR4Xu3b3XXTMBTAcV1Leu8I3YAyAWECygSlE9BOQJmAdAK6QWGCphNQNmAE+mzZl6Mc5xzXtiLJ1r0STfLqJM3/Z9muPwTiwF9w4P3iCHAcAQ4BRDxt2/aDEOKkqqqfAPD0P2EZYy6EEJ/sbwaATVVVtwDwd9gwuQkYY+wHv9n43QcQca21vi4dARFPmqa5F0Ks+r8VEZ+UUu+HCCMAu+abpvnVj+990Z1S6rJUBBtvjHkAgLOp34iIX7XWN/1lI4Cmaa4Q0a5916tIBF+8jUHER631i5ExAqjr+gYAvnjWclEIIfHBAIh41m0CvpFeBEJofBdzqZS627sJ2IV1Xa8B4LNPQAiRFSEmfmr4b48QrkhjjJWyhxLfKwtCZPxvpdQq+DC4Ky4VIVX83hFQKkLK+CAA+6ZSRkLq+GCAEhAo4qMAciJQxUcD5ECgjJ8FwIlAHT8bgAOBI34RACUCV/xiAAoEzvgkACkRuOOTAaRAyBGfFGAJQq745ABzEHLGkwDEItgLMK5reP3zcER0ntL6ztf3LSe7MRJxAuX9/VTxZCNgxqm0E4EynhwgcnMYIVDHswDMReCIZwOIReCKZwOIOdR12wHbhVayo8Bug54Rv/soCwIpwIJ4NgQygATxLAgkAAnjyRGSA8TE27199+BFtjtQSQFi43e3qyL+bU6+Y0wGMDd+xr/NSRGSACyNz4mwGCBVfC6ERQCp43MgzAagiudGmAVAHc+JEA3AFc+FEAXAHc+BEAyQK54aIQggdzwlgheglHgqhL0ApcVTIDgBSo1PjTAJUHp8SgTXfIGH4fP2U3cuOK/euu6chJ5KI+Kt1vpq+D0jgG6yxHfnrZpuQQnxsSNBSvl2OPNl6nH5DQC82wdQUnwMAgBcSynX/bZogBLjIxA+KqV++ACcEyZKjg9AeJZSnobMGbLzbuxm8KYvZZ+3V0qdTz1y7ttfcC+fmO/wjIjnWuuNdydo39AdBu0eczu/BgDsdbgXMy24o2L/nn3wom3bFSL+kVLaFTqaMrdti/3i1/b+I8BrW6OxPQc/Av4BDSZYbnPWwJkAAAAASUVORK5CYII="
+	close: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAAEAklEQVRIicWXT4gUVxDGf98yh2FYZAmyiIccZJFFgoclufcGMT0i9EREBA+5heQSDyEsIssii4dFQsA/l5CLhEAQWWwQtxNIpq+BEHIIIiI55CCLiIgMwyDil0P362lnekwuMe/4pqp+r75XVa9HxrzpNffGiUCraTPd6bcQi7b2Sgxs/9Xrrr74p2Bpls8Be4F9hoHgYRJHo0m7qUzTLG+B3jHakvgJ+1tJ75cB/2F5CXMR6IOvY46mO3ln0kr1Oy2AHLY5J3EcaAPYvivpLPBzEkcvm7PsHwBdBE4XMYXsX5G2sO8k3dXhVKa3dvI542Xsc8gVsFyHgC0gbso43ekvgTYCUAgBiBVgDelImuVVvCqA5AWhMxbHhdpBAWMkYfuw7Q3D8To4zfKDSBu2T9kF0A7qaQ7zrs0XtvcHn1ohqQMsCbWLQxbOBbCyXRGcL2G3gSVgHTghqR1gkoojl/6CQ6D5BiiPbX4QPoK0UAHLTCkO0QKv2JwHHZB4D+jZ7kgKigQQSEVkexu0OyVvEkcjxE2kLeCZSoeQcZGFAFqSVoQ3sU9SAids6ut7pEvA40rTyYmUZnnH+BNgTWixPGm4eKjsx1lN2RiQR1g3EBeSOPqzzpiqxCSOhkJfY74CHhq/NMUdjTN5FWgXNRtKD3kIuonYnAQ2QkvwQOgq5ppgVzDOKARmDESg8d0PbbaxN5M4etAUf+aUSbrRwOKyzRXEkyozF0pKxhTA4gwCeA7cAm0m3dX7s2K/drT14mgg6UdgECq56lsoh4BAQXqeA79IbszwX0HTLF8GPgcWQ+OrLCahqqbCvnEbfAZ07HWzeuYPadZfBtbBPZt2vS2qehfAeE+oZbMCXgeOpVm/MX7jZprlB7HOAz2bzis1pLJ3a61TDYNitUArttexjjZlPNWnt7L8gGADOMX4lakBGgfAhA0AL7B/N6xJyuuvUwVNs3zO9pKkC8Dp2Y1vkEa2HyHmMW8p7Aeb8hCl/13grE3e60YvoCavYY/ER5PAsl5rja8heFvSh8AlSQ+BVwZI6F0MxoeADYm3A2v8tNnzoIOlQpVcKuUqJ/GQ0Idx9BvmKuYasFtUdEhW4/lR9PWyoTMFRXoK9IHdcWtUKmBpVADZTOLoHkCvuzoAXwZfAT1yODBjpSSNJN8RPJmCJnE0AG8bvgHvhnspVUBw03AhACu/7uoAuCqxhfRMFri6mhFwG/RloUZQdbJ6d/L9iE8FHwOL5fYN4FzT8K78sn5H6DNgDVgASiAXgT+SOKq+JqegAGmW7wOfAK0C98HXk3j2LK2BF0AnhT/AemDxneBeHTgTWoLnDXsEQ+DZrK/AKfBO3pbYiz1EetrkNxP6X67/5W/F3zVbIFz7WMkJAAAAAElFTkSuQmCC"
 }
 export default class Calendar extends Component {
 	static propTypes = {
 		i18n      : PropTypes.string,
 		format    : PropTypes.string,
 		customI18n: PropTypes.object,
-		color     : PropTypes.shape({
-			mainColor  : PropTypes.string,
-			subColor   : PropTypes.string,
-			borderColor: PropTypes.string
+		styles: PropTypes.shape({
+			tabBarContainer: PropTypes.object,
+			tabBarSelectedBtn: PropTypes.object,
+			tabBarSelectedBtnText: PropTypes.object,
+			tabBarBtn: PropTypes.object,
+			tabBarBtnText: PropTypes.object,
+			selectedMidDays: PropTypes.object,
+  			selectedMidDaysText: PropTypes.object,
+  			selectedDay:PropTypes.object,
+  			selectedDayText: PropTypes.object,
+			dayText: PropTypes.object,
+			week: PropTypes.object,
+			weekText: PropTypes.object,
+			monthTitle: PropTypes.object,
+  			monthTitleText: PropTypes.object,
+			dateHeadingText: PropTypes.object
 		}),
 		minDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 		maxDate      : PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
 		selectionType: PropTypes.oneOf(["manual", "week", "day"]),
-		animationType: PropTypes.oneOf(["none", "slide", "fade"])
+		animationType: PropTypes.oneOf(["none", "slide", "fade"]),
+		underlayColor: PropTypes.string
 	}
+	
 	static defaultProps = {
 		format       : "YYYY-MM-DD",
 		i18n         : "en",
 		dow          : 1,
 		customI18n   : {},
-		color        : {},
 		selectionType: "manual",
-		animationType: "slide"
+		animationType: "slide",
+		styles: {
+			tabBarContainer: {},
+			tabBarSelectedBtn: {},
+			tabBarSelectedBtnText: {},
+			tabBarBtn: {},
+			tabBarBtnText: {},
+			selectedMidDays: {},
+  			selectedMidDaysText: {},
+  			selectedDay: {},
+  			selectedDayText: {},
+			dayText: {},
+			week: {},
+			weekText: {},
+			monthTitle: {},
+			monthTitleText: {},
+			dateHeadingText: {}
+		},
+		underlayColor: "#f2fdf6"
 	}
 	static I18N_MAP = {
 		zh: {
@@ -255,15 +285,25 @@ export default class Calendar extends Component {
 	}
 
 	radioBtnsStyle (_selectionType) {
-		const { color: { borderColor } } = this.props
+		const { styles:customStyles } = this.props
 		const { selectionType } = this.state
 
-		const selected = selectionType === _selectionType
-		const btnColor = borderColor || "rgba(255, 255, 255, 0.5)"
-
-		return {
-			backgroundColor: selected ? btnColor : "transparent"
+		if(selectionType === _selectionType){
+			return  [styles.tabBarSelectedBtn, customStyles.tabBarSelectedBtn]
 		}
+
+		return [customStyles.tabBarBtn]
+	}
+
+	radioBtnsTextStyle (_selectionType) {
+		const { styles:customStyles } = this.props
+		const { selectionType } = this.state
+
+		if(selectionType === _selectionType){
+			return  [styles.tabBarSelectedBtnText, customStyles.tabBarSelectedBtnText]
+		}
+
+		return []
 	}
 
 	cancel () {
@@ -330,16 +370,7 @@ export default class Calendar extends Component {
 			isModalVisible,
 			selectionType
 		} = this.state
-		const { animationType } = this.props
-		const {
-			mainColor = "#15aaaa",
-			subColor = "#fff",
-			borderColor = "rgba(255, 255, 255, 0.50)"
-		} = this.props.color
-		const color = { mainColor, subColor, borderColor }
-		const mainBack = { backgroundColor: mainColor }
-		const subBack = { backgroundColor: subColor }
-		const subFontColor = { color: subColor }
+		const { animationType, styles:customStyles,underlayColor } = this.props
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
 
@@ -349,7 +380,7 @@ export default class Calendar extends Component {
 				visible={isModalVisible}
 				onRequestClose={this.close}
 			>
-				<View style={[styles.container, mainBack]}>
+				<View style={[styles.container]}>
 					<View style={styles.ctrl}>
 						<TouchableHighlight underlayColor="transparent" onPress={this.cancel}>
 							<Image
@@ -364,7 +395,7 @@ export default class Calendar extends Component {
 								activeOpacity={0.8}
 								onPress={this.clear}
 							>
-								<Text style={[styles.clearText, subFontColor]}>
+								<Text style={styles.clearText}>
 									{this._i18n("clear", "text")}
 								</Text>
 							</TouchableHighlight>
@@ -372,31 +403,31 @@ export default class Calendar extends Component {
 					</View>
 					<View style={styles.result}>
 						<View style={styles.resultPart}>
-							<Text style={[styles.resultText, styles.startText, subFontColor]}>
+							<Text style={[styles.resultText, customStyles.dateHeadingText, styles.startText]}>
 								{startDateText || this._i18n("start", "text")}
 							</Text>
-							<Text style={[styles.resultText, styles.startText, subFontColor]}>
+							<Text style={[styles.resultText, customStyles.dateHeadingText, styles.startText]}>
 								{startWeekdayText || this._i18n("date", "text")}
 							</Text>
 						</View>
-						<View style={[styles.resultSlash, subBack]} />
+						<View style={[styles.resultSlash]} />
 						<View style={styles.resultPart}>
-							<Text style={[styles.resultText, styles.endText, subFontColor]}>
+							<Text style={[styles.resultText, customStyles.dateHeadingText, styles.endText]}>
 								{endDateText || this._i18n("end", "text")}
 							</Text>
-							<Text style={[styles.resultText, styles.endText, subFontColor]}>
+							<Text style={[styles.resultText, customStyles.dateHeadingText, styles.endText]}>
 								{endWeekdayText || this._i18n("date", "text")}
 							</Text>
 						</View>
 					</View>
-					<View style={styles.week}>
+					<View style={[styles.week, customStyles.week]}>
 						{this.daysOfTheWeek.map(item => (
-							<Text style={[styles.weekText, subFontColor]} key={item}>
+							<Text style={[styles.weekText, customStyles.weekText]} key={item}>
 								{this._i18n(item, "w")}
 							</Text>
 						))}
 					</View>
-					<View style={[styles.scroll, { borderColor }]}>
+					<View style={[styles.scroll]}>
 						<MonthList
 							today={this._today}
 							minDate={this._minDate}
@@ -405,31 +436,33 @@ export default class Calendar extends Component {
 							endDate={this.state.endDate}
 							onChoose={day => this._onChoose(day, selectionType)}
 							i18n={this.props.i18n}
-							color={color}
+							styles={customStyles}
+							underlayColor={underlayColor}
 						/>
 					</View>
-					<View style={styles.btn}>
+					<View style={[styles.btn,customStyles.tabBarContainer]}>
 						<View style={styles.radioBtns}>
 							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("day")]}
-								underlayColor={mainColor}
+								style={[styles.tabBarBtn, ...this.radioBtnsStyle("day")]}
+								underlayColor={underlayColor}
 								onPress={() => this.selection("day")}
 							>
-								<Text style={[styles.clearText, subFontColor]}>Day</Text>
+								<Text style={[styles.tabBarBtnText, customStyles.tabBarBtnText, ...this.radioBtnsTextStyle("day")]}>Day</Text>
 							</TouchableHighlight>
 							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("week")]}
-								underlayColor={mainColor}
+								style={[styles.tabBarBtn, ...this.radioBtnsStyle("week")]}
+								underlayColor={underlayColor}
 								onPress={() => this.selection("week")}
 							>
-								<Text style={[styles.clearText, subFontColor]}>Week</Text>
+								<Text style={[styles.tabBarBtnText, customStyles.tabBarBtnText, ...this.radioBtnsTextStyle("week")]}>Week</Text>
 							</TouchableHighlight>
 							<TouchableHighlight
-								style={[styles.selectionBtn, this.radioBtnsStyle("manual")]}
-								underlayColor={mainColor}
+								style={[styles.tabBarBtn, ...this.radioBtnsStyle("manual")]}
+								underlayColor={underlayColor}
+								underlayTextColor={'#fff'}
 								onPress={() => this.selection("manual")}
 							>
-								<Text style={[styles.clearText, subFontColor]}>Manual</Text>
+								<Text style={[styles.tabBarBtnText, customStyles.tabBarBtnText, ...this.radioBtnsTextStyle("manual")]}>Manual</Text>
 							</TouchableHighlight>
 						</View>
 						{isValid ? (
@@ -443,7 +476,7 @@ export default class Calendar extends Component {
 									<Text
 										ellipsisMode="tail"
 										numberOfLines={1}
-										style={[styles.confirmText, subFontColor]}
+										style={[styles.confirmText]}
 									>
 										{this._i18n("apply", "text")}
 									</Text>
