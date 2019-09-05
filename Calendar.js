@@ -342,7 +342,7 @@ export default class Calendar extends Component {
 		const subFontColor = { color: subColor }
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
-
+			
 		return (
 			<Modal
 				animationType={animationType}
