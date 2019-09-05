@@ -373,7 +373,7 @@ export default class Calendar extends Component {
 		const { animationType, styles:customStyles,underlayColor } = this.props
 		const isValid = !startDate || endDate
 		const isClearVisible = startDate || endDate
-
+			
 		return (
 			<Modal
 				animationType={animationType}

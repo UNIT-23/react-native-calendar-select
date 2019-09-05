@@ -62,7 +62,7 @@ export default class Day extends Component {
 			>
 				{this.isValid ? (
 					<TouchableHighlight
-						style={[styles.day, this.isToday && styles.today, ...((this.isStart || this.isEnd) && [styles.selectedDay, customStyles.selectedDay]: [])]}
+						style={[styles.day, this.isToday && styles.today, ...((this.isStart || this.isEnd) && [styles.selectedDay, customStyles.selectedDay] || [])]}
 						underlayColor={underlayColor}
 						onPress={this._chooseDay}
 					>

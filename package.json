@@ -25,8 +25,8 @@
 	},
 	"peerDependencies": {
 		"prop-types": "^15.6.0",
-		"react": "^15.4.2",
-		"react-native": "^0.41.2"
+		"react": "16.8.6",
+		"react-native": "0.60.5"
 	},
 	"devDependencies": {
 		"babel-eslint": "^8.2.1",
@@ -47,10 +47,10 @@
 		"eslint-plugin-standard": "^3.0.1",
 		"istanbul": "^0.4.5",
 		"jest": "21.2.1",
-		"react": "^16.1.0",
+		"react": "16.8.6",
 		"react-addons-test-utils": "^15.6.2",
 		"react-dom": "^16.2.0",
-		"react-native": "^0.50.0",
+		"react-native": "0.60.5",
 		"react-test-renderer": "16.0.0"
 	},
 	"jest": {

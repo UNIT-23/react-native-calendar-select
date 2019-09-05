@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from "react"
-import { ListView, Dimensions } from "react-native"
+import { FlatList, Dimensions,View } from "react-native"
 import Moment from "moment"
 import styles from "./CalendarStyle"
 import Month from "./Month"
@@ -11,14 +11,9 @@ const { width } = Dimensions.get("window")
 export default class MonthList extends Component {
 	constructor (props) {
 		super(props)
-		this.ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => {
-				return r2.shouldUpdate
-			}
-		})
 		this.monthList = []
 		this.state = {
-			dataSource: this.ds.cloneWithRows(this._getMonthList())
+			dataSource: this._getMonthList()
 		}
 		this._renderMonth = this._renderMonth.bind(this)
 		this._shouldUpdate = this._shouldUpdate.bind(this)
@@ -38,12 +33,12 @@ export default class MonthList extends Component {
 		)
 		if (isDateUpdated) {
 			this.setState({
-				dataSource: this.state.dataSource.cloneWithRows(this._getMonthList(nextProps))
+				dataSource: this._getMonthList(nextProps)
 			})
 		}
 	}
 	_renderMonth (month) {
-		return <Month month={month.date || {}} {...this.props} />
+		return <Month month={month.item.date || {}} {...this.props} />
 	}
 	_checkRange (date, start, end) {
 		if (!date || !start) {
@@ -125,9 +120,8 @@ export default class MonthList extends Component {
 		const weekOffset = this._getWeekNums(minDate, startDate)
 		setTimeout(() => {
 			this.list &&
-				this.list.scrollTo({
-					x: 0,
-					y:
+				this.list.scrollToOffset({
+					offset:
 						monthOffset * (24 + 25) +
 						(monthOffset ? weekOffset * Math.ceil(width / 7 + 10) : 0),
 					animated: true
@@ -139,15 +133,15 @@ export default class MonthList extends Component {
 	}
 	render () {
 		return (
-			<ListView
+			<FlatList
 				ref={list => {
 					this.list = list
 				}}
 				style={styles.scrollArea}
-				dataSource={this.state.dataSource}
-				renderRow={this._renderMonth}
-				pageSize={2}
-				initialListSize={2}
+				data={this.state.dataSource}
+				renderItem={this._renderMonth}
+				initialNumToRender={2}
+				keyExtractor={(item, index) => index.toString()}
 				showsVerticalScrollIndicator={false}
 			/>
 		)
