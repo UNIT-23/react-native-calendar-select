@@ -36,7 +36,6 @@ export default StyleSheet.create({
   },
   dayText: {
     fontSize: 16,
-    fontWeight: '400',
     textAlign: 'center'
   },
   dayTextDisabled: {
