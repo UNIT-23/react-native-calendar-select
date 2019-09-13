@@ -292,7 +292,7 @@ export default class Calendar extends Component {
 			return  [styles.tabBarSelectedBtn, customStyles.tabBarSelectedBtn]
 		}
 
-		return [customStyles.tabBarBtn]
+		return []
 	}
 
 	radioBtnsTextStyle (_selectionType) {
@@ -443,21 +443,21 @@ export default class Calendar extends Component {
 					<View style={[styles.btn,customStyles.tabBarContainer]}>
 						<View style={styles.radioBtns}>
 							<TouchableHighlight
-								style={[styles.tabBarBtn, ...this.radioBtnsStyle("day")]}
+								style={[styles.tabBarBtn, customStyles.tabBarBtn, ...this.radioBtnsStyle("day")]}
 								underlayColor={underlayColor}
 								onPress={() => this.selection("day")}
 							>
 								<Text style={[styles.tabBarBtnText, customStyles.tabBarBtnText, ...this.radioBtnsTextStyle("day")]}>Day</Text>
 							</TouchableHighlight>
 							<TouchableHighlight
-								style={[styles.tabBarBtn, ...this.radioBtnsStyle("week")]}
+								style={[styles.tabBarBtn, customStyles.tabBarBtn, ...this.radioBtnsStyle("week")]}
 								underlayColor={underlayColor}
 								onPress={() => this.selection("week")}
 							>
 								<Text style={[styles.tabBarBtnText, customStyles.tabBarBtnText, ...this.radioBtnsTextStyle("week")]}>Week</Text>
 							</TouchableHighlight>
 							<TouchableHighlight
-								style={[styles.tabBarBtn, ...this.radioBtnsStyle("manual")]}
+								style={[styles.tabBarBtn, customStyles.tabBarBtn, ...this.radioBtnsStyle("manual")]}
 								underlayColor={underlayColor}
 								underlayTextColor={'#fff'}
 								onPress={() => this.selection("manual")}
