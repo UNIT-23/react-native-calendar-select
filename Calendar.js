@@ -18,6 +18,7 @@ export default class Calendar extends Component {
 		i18n      : PropTypes.string,
 		format    : PropTypes.string,
 		customI18n: PropTypes.object,
+		dow          : PropTypes.number,
 		color     : PropTypes.shape({
 			mainColor  : PropTypes.string,
 			subColor   : PropTypes.string,
@@ -92,10 +93,11 @@ export default class Calendar extends Component {
 		super(props)
 		this.state = {
 			isModalVisible: false,
-			selectionType : "manual"
+			selectionType : "manual",
+			daysOfTheWeek:[7, 1, 2, 3, 4, 5, 6]
 		}
 
-		this.daysOfTheWeek = [7, 1, 2, 3, 4, 5, 6]
+		this.daysOfTheWeekDefault = [7, 1, 2, 3, 4, 5, 6]
 
 		this._i18n = this._i18n.bind(this)
 		this._getDateRange = this._getDateRange.bind(this)
@@ -107,14 +109,32 @@ export default class Calendar extends Component {
 		this.open = this.open.bind(this)
 		this.clear = this.clear.bind(this)
 		this.confirm = this.confirm.bind(this)
+		this.updateRange = this.updateRange.bind(this)
 	}
 
-	componentWillMount () {
-		const { i18n, dow } = this.props
+	UNSAFE_componentWillMount () {
+		this.updateRange()
+	}
 
+	UNSAFE_componentWillReceiveProps (nextProps) {
+		const { selectionType,dow } = nextProps
+		if(this.props.dow !== dow)
+		{
+			this.updateRange(nextProps)
+		}
+		this._resetCalendar(nextProps)
+
+		this.setState({
+			selectionType
+		})
+	}
+
+	updateRange(nextProps = null){
+		const { i18n, dow } = nextProps !== null ? nextProps : this.props
+		let daysOfTheWeek = JSON.parse(JSON.stringify(this.daysOfTheWeekDefault))
 		for (let i = 1; i < dow + 1; i++) {
-			const last = this.daysOfTheWeek.shift()
-			this.daysOfTheWeek = [...this.daysOfTheWeek, last]
+			const last = daysOfTheWeek.shift()
+			daysOfTheWeek = [...daysOfTheWeek, last]
 		}
 
 		Moment.updateLocale(i18n, {
@@ -123,20 +143,14 @@ export default class Calendar extends Component {
 				dow
 			}
 		})
-
 		this._today = Moment()
 		this._year = this._today.year()
-		this._getDateRange()
-	}
-
-	componentWillReceiveProps (nextProps) {
-		const { selectionType } = nextProps
-		this._resetCalendar()
-
+		this._getDateRange(nextProps)
 		this.setState({
-			selectionType
+			daysOfTheWeek:daysOfTheWeek
 		})
 	}
+	
 
 	componentDidUpdate (nextProps, nextState) {
 		const { startDate, endDate, selectionType } = this.state
@@ -146,34 +160,42 @@ export default class Calendar extends Component {
 		}
 	}
 
-	_i18n (data, type) {
+	_i18n (data, type, weekStartDay = 1) {
 		const { i18n, customI18n } = this.props
 		if (~["w", "weekday", "text"].indexOf(type)) {
-			return (customI18n[type] || {})[data] || Calendar.I18N_MAP[i18n][type][data]
+				const weekArray = Calendar.I18N_MAP[i18n][type]
+				const reArrangedWeek = (Array.isArray(weekArray) && type === 'weekday') ? 
+				[
+				...weekArray.slice(weekStartDay,weekArray.length),
+				...weekArray.slice(1,weekStartDay)
+				] 
+				: weekArray
+			return (customI18n[type] || {})[data] || reArrangedWeek[data]
 		}
 		if (type === "date") {
 			return data.format(customI18n[type] || Calendar.I18N_MAP[i18n][type])
 		}
 	}
 
-	_resetCalendar () {
-		const { startDate, endDate, format } = this.props
+	_resetCalendar (nextProps = null) {
+		const { startDate, endDate, format, dow } = (nextProps !== null) ? nextProps : this.props
 		const start = Moment(startDate, format)
 		const end = Moment(endDate, format)
 		const isStartValid = start.isValid() && start >= this._minDate && start <= this._maxDate
 		const isEndValid = end.isValid() && end >= this._minDate && end <= this._maxDate
+
 		this.setState({
 			startDate       : isStartValid ? start : null,
 			startDateText   : isStartValid ? this._i18n(start, "date") : "",
-			startWeekdayText: isStartValid ? this._i18n(start.weekday(), "weekday") : "",
+			startWeekdayText: isStartValid ? this._i18n(start.weekday(), "weekday",dow) : "",
 			endDate         : isEndValid ? end : null,
 			endDateText     : isEndValid ? this._i18n(end, "date") : "",
-			endWeekdayText  : isEndValid ? this._i18n(end.weekday(), "weekday") : ""
+			endWeekdayText  : isEndValid ? this._i18n(end.weekday(), "weekday",dow) : ""
 		})
 	}
 
-	_getDateRange () {
-		const { maxDate, minDate, format } = this.props
+	_getDateRange (nextProps = null) {
+		const { maxDate, minDate, format } = nextProps !== null ? nextProps: this.props
 		let max = Moment(maxDate, format)
 		let min = Moment(minDate, format)
 		const maxValid = max.isValid()
@@ -204,9 +226,9 @@ export default class Calendar extends Component {
 					startDate       : day,
 					endDate         : day,
 					startDateText   : this._i18n(day, "date"),
-					startWeekdayText: this._i18n(day.weekday(), "weekday"),
+					startWeekdayText: this._i18n(day.weekday(), "weekday",this.props.dow),
 					endDateText     : this._i18n(day, "date"),
-					endWeekdayText  : this._i18n(day.weekday(), "weekday")
+					endWeekdayText  : this._i18n(day.weekday(), "weekday",this.props.dow)
 				})
 
 				this.confirm({ startDate: day, endDate: day })
@@ -221,7 +243,7 @@ export default class Calendar extends Component {
 					startDate       : startDay,
 					endDate         : null,
 					startDateText   : this._i18n(startDay, "date"),
-					startWeekdayText: this._i18n(startDay.weekday(), "weekday"),
+					startWeekdayText: this._i18n(startDay.weekday(), "weekday",this.props.dow),
 					endDateText     : "",
 					endWeekdayText  : ""
 				})
@@ -230,7 +252,7 @@ export default class Calendar extends Component {
 				this.setState({
 					endDate       : endDay,
 					endDateText   : this._i18n(endDay, "date"),
-					endWeekdayText: this._i18n(endDay.weekday(), "weekday")
+					endWeekdayText: this._i18n(endDay.weekday(), "weekday",this.props.dow)
 				})
 			}
 			return
@@ -241,7 +263,7 @@ export default class Calendar extends Component {
 				startDate       : day,
 				endDate         : null,
 				startDateText   : this._i18n(day, "date"),
-				startWeekdayText: this._i18n(day.weekday(), "weekday"),
+				startWeekdayText: this._i18n(day.weekday(), "weekday",this.props.dow),
 				endDateText     : "",
 				endWeekdayText  : ""
 			})
@@ -249,7 +271,7 @@ export default class Calendar extends Component {
 			this.setState({
 				endDate       : day,
 				endDateText   : this._i18n(day, "date"),
-				endWeekdayText: this._i18n(day.weekday(), "weekday")
+				endWeekdayText: this._i18n(day.weekday(), "weekday",this.props.dow)
 			})
 		}
 	}
@@ -390,7 +412,7 @@ export default class Calendar extends Component {
 						</View>
 					</View>
 					<View style={styles.week}>
-						{this.daysOfTheWeek.map(item => (
+						{this.state.daysOfTheWeek.map(item => (
 							<Text style={[styles.weekText, subFontColor]} key={item}>
 								{this._i18n(item, "w")}
 							</Text>
